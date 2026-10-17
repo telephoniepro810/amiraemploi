@@ -4,297 +4,793 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#113d3e">
-<title>Nour Carrière — Trouve un emploi qui te correspond</title>
+<meta name="theme-color" content="#08736b">
+<title>JobHub IDF — Trouver un poste sereinement</title>
+
 <style>
 :root{
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;
-  color:#1b3435;
-  background:#f6f9f8;
-  --green:#125a59;
-  --dark:#103a3c;
-  --soft:#e7f4ef;
-  --line:#dce9e4;
-  --muted:#647c79;
+  --ink:#1e3033;
+  --muted:#5e7377;
+  --teal:#08776f;
+  --dark:#075b55;
+  --mint:#e6f4ef;
+  --paper:#fbf9f5;
+  --line:#e0e8e5;
 }
 *{box-sizing:border-box}
-body{margin:0}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font:15px/1.55 system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-a{text-decoration:none;color:inherit}
-button:focus-visible,a:focus-visible,input:focus-visible,
-select:focus-visible,textarea:focus-visible{
-  outline:3px solid #33aea1;
-  outline-offset:3px;
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible,
+input:focus-visible,select:focus-visible{
+  outline:3px solid #56bcac;
+  outline-offset:2px;
 }
-.shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
-.sidebar{
-  background:#fff;border-right:1px solid var(--line);
-  padding:25px 15px;position:sticky;top:0;height:100vh;
-  display:flex;flex-direction:column;
+.head{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:#fff;
+  border-bottom:1px solid var(--line);
 }
-.brand{display:flex;align-items:center;gap:11px;padding:4px 10px 25px}
-.mark{
-  background:var(--dark);color:#fff;width:44px;height:44px;
-  border-radius:14px;display:grid;place-items:center;
-  font-size:25px;font-weight:800;
+.bar{
+  max-width:1480px;
+  margin:auto;
+  padding:13px 24px;
+  display:flex;
+  align-items:center;
+  gap:20px;
 }
-.brand strong{display:block;font-size:17px}
-.brand small{color:var(--muted);font-size:12px}
-.menu{display:grid;gap:5px}
-.menu button{
-  text-align:left;border:0;background:transparent;color:#536b69;
-  border-radius:11px;padding:13px 14px;font-weight:650;
+.logo{
+  color:var(--teal);
+  font-size:20px;
+  font-weight:850;
+  white-space:nowrap;
 }
-.menu button.active,.menu button:hover{
-  background:#e5f3ef;color:var(--dark);
+.logo span{margin-right:8px}
+.nav{
+  flex:1;
+  display:flex;
+  gap:3px;
+  overflow-x:auto;
+  scrollbar-width:none;
 }
-.sidebar-note{
-  margin-top:auto;background:var(--soft);padding:14px;
-  border-radius:14px;color:#48645f;font-size:12px;line-height:1.7;
+.nav::-webkit-scrollbar{display:none}
+.nav button{
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  padding:10px 11px;
+  color:#385154;
+  font-weight:650;
+  font-size:13px;
+  white-space:nowrap;
 }
-.content{
-  padding:31px clamp(18px,4vw,58px) 55px;
-  min-width:0;max-width:1660px;width:100%;margin:auto;
+.nav button:hover,.nav button.active{
+  background:var(--mint);
+  color:var(--dark);
 }
-.top{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;margin-bottom:24px;
+.btn{
+  border:1px solid #accbc5;
+  background:#fff;
+  color:var(--dark);
+  border-radius:11px;
+  min-height:43px;
+  padding:10px 15px;
+  font-size:13px;
+  font-weight:750;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  cursor:pointer;
 }
-.eyebrow{
-  font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-  color:#36867d;font-size:11px;
+.btn:hover{background:#f1faf6}
+.btn.primary{
+  background:var(--teal);
+  border-color:var(--teal);
+  color:white;
 }
-.hint{color:var(--muted);font-size:13px}
-.mobilebar{display:none}
-.title{
-  font-size:clamp(28px,3.6vw,44px);line-height:1.13;
-  letter-spacing:-1.4px;color:#173b3d;margin:8px 0 12px;
-}
-.lead{
-  color:#667d7a;line-height:1.75;max-width:760px;
-  margin:0 0 26px;
-}
+.btn.primary:hover{background:var(--dark)}
+.btn.slim{min-height:35px;padding:7px 10px;font-size:12px}
+.btn.danger{color:#ab4848;border-color:#efd0d0}
+.wrap{max-width:1440px;margin:auto;padding:0 24px 64px}
+.page{display:none}
+.page.active{display:block}
 .hero{
-  background:linear-gradient(125deg,#124649,#177969);
-  color:white;border-radius:25px;
-  padding:clamp(25px,4vw,45px);
-  display:grid;gap:15px;
-  box-shadow:0 18px 44px #14565422;
+  margin:0 -24px;
+  padding:68px 25px 65px;
+  background:linear-gradient(112deg,#e7f4f0,#f5f7f3 60%,#f8f6f1);
+  border-bottom:1px solid #e1e7df;
+}
+.hero-inner{max-width:1200px;margin:auto}
+.eyebrow{
+  color:#22897f;
+  font-size:12px;
+  font-weight:850;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
 }
 .hero h1{
-  font-size:clamp(29px,4vw,48px);
-  letter-spacing:-1.3px;line-height:1.14;
-  max-width:690px;margin:0;
+  font-size:clamp(38px,5.2vw,63px);
+  line-height:1.1;
+  letter-spacing:-2px;
+  margin:14px 0 17px;
+  max-width:1100px;
 }
-.hero p{color:#e0efea;line-height:1.7;max-width:690px;margin:0}
-.hero .btn{border-color:#fff;color:#154b45;background:#fff}
-.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.between{justify-content:space-between}
-.btn{
-  padding:10px 15px;min-height:42px;
-  display:inline-flex;align-items:center;justify-content:center;
-  gap:7px;border:1px solid #bed5ce;border-radius:11px;
-  background:#fff;color:#155d57;font-weight:750;
-  font-size:13px;line-height:1.2;
-  transition:transform .15s,border .15s;
+.hero p{
+  font-size:clamp(16px,2vw,20px);
+  color:#607780;
+  max-width:1000px;
+  line-height:1.65;
+  margin:0 0 26px;
 }
-.btn:hover{transform:translateY(-1px);border-color:#458e84}
-.primary{background:var(--green);border-color:var(--green);color:white}
-.ghost{background:#eff7f3;border-color:#e5efeb}
-.danger{color:#aa4343}
-.small{padding:7px 10px;min-height:34px}
-.panel,.card,.stat{
-  background:white;border:1px solid #e0eae6;
-  border-radius:17px;box-shadow:0 9px 32px #153f4310;
+.row{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.spread{justify-content:space-between}
+.section-header{margin:44px 0 20px}
+.section-header h2{
+  font-size:clamp(28px,3vw,38px);
+  letter-spacing:-1px;
+  line-height:1.2;
+  margin:4px 0 9px;
 }
-.panel{padding:22px;margin:16px 0}
+.section-header p{color:var(--muted);max-width:880px}
+.subheading{font-size:24px;margin:35px 0 17px}
 .grid{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:15px;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
 }
-.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card,.panel,.metric{
+  background:white;
+  border:1px solid #e2e9e5;
+  border-radius:16px;
+  box-shadow:0 9px 25px rgba(29,64,61,.06);
+}
 .card{
-  padding:20px;display:flex;flex-direction:column;
-  gap:12px;min-width:0;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:11px;
+  min-width:0;
 }
-.card h3{
-  font-size:17px;color:#173b3d;margin:0;
-  overflow-wrap:anywhere;
+.card h3{font-size:18px;margin:0;overflow-wrap:anywhere}
+.card p{font-size:13px;color:var(--muted);line-height:1.65;margin:0}
+.card .bottom{margin-top:auto;padding-top:8px}
+.panel{padding:23px;margin:20px 0}
+.panel h3{margin:0 0 15px}
+.metric{padding:20px}
+.metric strong{
+  display:block;
+  font-size:30px;
+  color:var(--dark);
 }
-.card p{color:#657875;line-height:1.62;margin:0;font-size:13px}
-.card .actions{margin-top:auto;padding-top:4px}
-.stat{padding:18px}
-.stat b{display:block;font-size:29px;color:#184e4c}
-.stat span{color:var(--muted);font-size:13px}
-.section{
-  font-size:23px;color:#153d3e;letter-spacing:-.5px;
-  margin:30px 0 16px;
+.metric span{color:var(--muted);font-size:13px}
+.stats{margin:18px 0}
+.pill{
+  display:inline-flex;
+  width:max-content;
+  max-width:100%;
+  padding:5px 10px;
+  border-radius:99px;
+  background:var(--mint);
+  color:#136e61;
+  font-size:11px;
+  font-weight:800;
 }
-.tag{
-  font-size:11px;font-weight:800;display:inline-flex;
-  padding:6px 9px;background:#e6f4ee;border-radius:30px;
-  color:#24695e;width:max-content;max-width:100%;
-}
-.tag.amber{background:#fff3de;color:#92612b}
-.tag.gray{background:#f1f3f2;color:#667a75}
-.filters{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
-.field{
-  border:1px solid #dce6e2;border-radius:11px;
-  background:white;padding:11px 12px;
-  min-height:43px;min-width:0;color:#1b4041;
-}
-.field.search{flex:1;min-width:220px}
-.field:focus{outline:2px solid #4caaa1}
-.toggle{
-  background:white;border:1px solid var(--line);
-  border-radius:11px;padding:10px 13px;
-  display:flex;align-items:center;gap:7px;
-  font-size:13px;font-weight:650;
-}
-.initial{
-  width:46px;height:46px;background:#e8f5f1;color:var(--green);
-  display:grid;place-items:center;border-radius:14px;
-  font-size:19px;font-weight:900;
-}
-.company-name{display:flex;align-items:center;gap:12px}
-.company-name h3{margin-bottom:3px}
-.company-name span{font-size:12px;color:#788985}
+.pill.amber{background:#fff3de;color:#846128}
 .notice{
-  background:#edf7f4;border-left:4px solid #367d75;
-  border-radius:11px;padding:16px 18px;font-size:13px;
-  line-height:1.7;color:#42635e;margin:19px 0;
+  padding:15px 17px;
+  background:#edf7f3;
+  border-left:4px solid #168479;
+  border-radius:10px;
+  color:#355e59;
+  margin:20px 0;
+  font-size:13px;
+  line-height:1.7;
 }
 .notice.warn{
-  background:#fff8ee;border-color:#b58b45;color:#725d38;
+  background:#fff8ef;
+  color:#78603a;
+  border-color:#d6a056;
 }
-.intro-cards{margin-top:20px}
-.listline{
-  border-bottom:1px solid #e6eeea;padding:13px 0;
-  color:#4e6662;font-size:14px;line-height:1.65;
+.tools{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:22px 0;
 }
-.listline:last-child{border:0}
-.formgrid{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+.field{
+  background:white;
+  border:1px solid #cfded9;
+  border-radius:10px;
+  padding:11px 13px;
+  min-height:45px;
+  width:100%;
+  min-width:0;
+  color:#244847;
+}
+.tools .field{width:auto;flex:0 1 215px}
+.tools .grow{flex:1 1 270px}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:17px;
+}
+.form-item{display:grid;gap:7px}
+.form-item label{
+  font-size:13px;
+  color:#365c59;
+  font-weight:750;
+}
+.form-item.full{grid-column:1/-1}
+textarea.field{resize:vertical;min-height:100px}
+.hint,.muted{color:var(--muted)}
+.small,.hint{font-size:13px}
+.letter{
+  border:1px solid #d2e4df;
+  background:#f8fcfa;
+  border-radius:10px;
+  padding:20px;
+  white-space:pre-wrap;
+  line-height:1.8;
+}
+.empty{
+  padding:35px 20px;
+  background:white;
+  border:1px dashed #b8cec7;
+  text-align:center;
+  color:var(--muted);
+  border-radius:16px;
+}
+.icon-letter{
+  height:43px;width:43px;
+  background:#e8f4ef;
+  color:var(--teal);
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-size:18px;
+  font-weight:900;
+  flex-shrink:0;
+}
+.company-line{display:flex;gap:10px;align-items:center}
+.company-line small{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+}
+.company-line a:hover{text-decoration:underline}
+.alphabet{display:flex;flex-wrap:wrap;gap:4px}
+.alphabet button{
+  min-width:29px;
+  min-height:30px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:8px;
+  color:#385e5a;
+  font-size:12px;
+}
+.alphabet button.active{
+  color:white;
+  background:var(--teal);
+}
+.app-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:19px;
+  margin-bottom:13px;
+}
+.app-card h3{margin:0}
+.app-card .metadata{
+  color:var(--muted);
+  font-size:12px;
+  margin:6px 0 12px;
+}
+.review{
+  display:grid;
+  grid-template-columns:210px 1fr;
   gap:14px;
 }
-.formgroup{display:grid;gap:7px}
-.formgroup label{font-size:13px;font-weight:700;color:#486663}
-.formgroup .field{width:100%}
-.full{grid-column:1/-1}
-textarea.field{min-height:120px;resize:vertical;line-height:1.6}
-.draft{
-  white-space:pre-wrap;padding:20px;background:#f6faf8;
-  border:1px solid var(--line);border-radius:12px;
-  line-height:1.8;color:#3c5652;font-size:14px;
-  overflow-wrap:anywhere;
+.status{
+  font-size:12px;
+  font-weight:750;
+  border-radius:7px;
+  padding:5px 10px;
+  background:#e9f5ee;
+  color:#125e53;
 }
-.scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;min-width:750px}
-th,td{
-  text-align:left;padding:12px 10px;
-  border-bottom:1px solid #e5eeeb;
-  vertical-align:top;font-size:13px;
+.checkrow{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:9px 0;
 }
-th{font-size:12px;color:#778984;background:#f8fbfa}
-td .field{max-width:160px}
-table a{color:#0a6b69;text-decoration:underline}
-.empty{
-  text-align:center;padding:42px 20px;background:white;
-  border:1px dashed #d2e0dc;border-radius:17px;color:#687e77;
-}
+.checkrow input{margin-top:5px;accent-color:var(--teal)}
 .footer{
-  border-top:1px solid var(--line);margin-top:45px;
-  padding-top:18px;color:#7b908b;font-size:12px;line-height:1.8;
+  border-top:1px solid var(--line);
+  padding-top:20px;
+  margin-top:55px;
+  color:#6a827b;
+  font-size:12px;
 }
-.count{color:#6c8580;font-weight:650;font-size:13px}
 .toast{
-  position:fixed;bottom:22px;right:22px;z-index:20;
-  padding:14px 20px;border-radius:11px;
-  background:#123f40;color:#fff;
-  box-shadow:0 10px 35px #173f4055;max-width:320px;
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#153e3a;
+  color:white;
+  border-radius:10px;
+  padding:13px 18px;
+  z-index:30;
+  display:none;
 }
-@media(max-width:1100px){
-  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .shell{grid-template-columns:215px minmax(0,1fr)}
+.toast.show{display:block}
+@media(max-width:1080px){
+  .bar{flex-wrap:wrap;gap:9px}
+  .nav{order:3;flex-basis:100%}
+  .grid,.grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media(max-width:740px){
-  .shell{display:block}
-  .sidebar{display:none}
-  .mobilebar{
-    position:sticky;top:0;z-index:5;display:block;
-    background:#fff;border-bottom:1px solid var(--line);
-    padding:10px 12px;
-  }
-  .mobilebrand{
-    font-weight:900;color:#114947;padding:5px 6px 10px;
-  }
-  .mobilemenu{
-    display:flex;overflow-x:auto;gap:6px;
-    padding-bottom:4px;scrollbar-width:thin;
-  }
-  .mobilemenu button{
-    white-space:nowrap;border:0;border-radius:9px;
-    padding:10px 12px;background:#f0f5f3;
-    color:#486d66;font-weight:700;font-size:12px;
-  }
-  .mobilemenu button.active{
-    background:#145b56;color:white;
-  }
-  .content{padding:20px 14px 45px}
-  .top{margin-bottom:18px}
-  .grid,.grid.two,.formgrid{grid-template-columns:1fr}
-  .hero{border-radius:17px}
-  .panel{padding:17px}
-  .filters .field,.filters .toggle{width:100%}
-  .filters .field.search{min-width:0}
-  .toast{left:16px;right:16px;bottom:16px}
+@media(max-width:680px){
+  .bar{padding:10px 13px}
+  .logo{font-size:18px}
+  .nav button{font-size:12px;padding:10px}
+  .wrap{padding:0 15px 55px}
+  .hero{margin:0 -15px;padding:49px 17px 52px}
+  .hero h1{font-size:36px;letter-spacing:-1.2px}
+  .hero p{font-size:16px}
+  .grid,.grid.four,.form-grid,.review{grid-template-columns:1fr}
+  .panel{padding:16px}
+  .section-header{margin:30px 0 17px}
+  .tools .field{flex:1 1 100%;width:100%}
+  .metric{padding:16px}
+  .app-card{padding:15px}
 }
 </style>
 </head>
+
 <body>
-<div id="root"></div>
+<header class="head">
+  <div class="bar">
+    <a class="logo" href="#pistes" data-link="pistes">
+      <span>💼</span>JobHub IDF
+    </a>
+    <nav class="nav" aria-label="Navigation">
+      <button data-nav="pistes" class="active">Pistes</button>
+      <button data-nav="entreprises">Entreprises A→Z</button>
+      <button data-nav="secteurs">Secteurs</button>
+      <button data-nav="droits">Tes droits</button>
+      <button data-nav="verifier">Vérifier</button>
+      <button data-nav="candidatures">Candidatures</button>
+      <button data-nav="suivi">Suivi <span id="nav-count"></span></button>
+      <button data-nav="plateformes">Où chercher</button>
+      <button data-nav="messages">Messages RH</button>
+      <button data-nav="faq">FAQ</button>
+    </nav>
+    <div>
+      <button id="export-top" class="btn primary">↓ Exporter</button>
+    </div>
+  </div>
+</header>
 
-<!-- React et Babel : aucune installation nécessaire -->
-<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<div class="wrap">
 
-<script type="text/babel">
-const {useState,useEffect,useMemo}=React;
+<!-- ACCUEIL -->
+<section class="page active" id="page-pistes">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">JobHub IDF · Recherche d'emploi</div>
+      <h1>Décroche un poste bien payé en Île-de-France, avec sérénité.</h1>
+      <p>
+        Des pistes de métiers, un annuaire d'entreprises de A à Z,
+        tes droits, des liens de recrutement et deux espaces
+        distincts pour enregistrer tes candidatures et suivre leur évolution.
+      </p>
+      <div class="row">
+        <button class="btn primary" data-go="candidatures">
+          Ajouter ma candidature →
+        </button>
+        <button class="btn" data-go="entreprises">
+          Annuaire A → Z
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="grid four stats">
+    <div class="metric">
+      <strong id="stat-companies">—</strong>
+      <span>Entreprises référencées</span>
+    </div>
+    <div class="metric">
+      <strong id="stat-careers">—</strong>
+      <span>Liens carrière renseignés</span>
+    </div>
+    <div class="metric">
+      <strong id="stat-applied">0</strong>
+      <span>Candidatures enregistrées</span>
+    </div>
+    <div class="metric">
+      <strong id="stat-active">0</strong>
+      <span>En cours de suivi</span>
+    </div>
+  </div>
 
-// ============================================================
-// ANNUAIRE : 246 ENTREPRISES
-// ============================================================
-// Ces entreprises proviennent de listes partagées sur les
-// réseaux sociaux. Leur présence ne confirme pas leur
-// politique concernant le port du voile.
-// ============================================================
+  <h2 class="subheading">Les meilleures pistes pour commencer</h2>
+  <div id="piste-cards" class="grid"></div>
+
+  <div class="notice warn">
+    <strong>À savoir :</strong> une entreprise citée sur les réseaux
+    sociaux n'accepte pas nécessairement le voile.
+    Vérifie les règles du poste, les horaires et les pauses
+    directement auprès du recruteur.
+  </div>
+</section>
+
+<!-- ANNUAIRE -->
+<section class="page" id="page-entreprises">
+  <div class="section-header">
+    <div class="eyebrow">Annuaire A à Z</div>
+    <h2>Entreprises et sites carrière</h2>
+    <p>
+      Clique sur une entreprise pour ouvrir son portail carrière.
+      Si l'adresse manque, une recherche ciblée est proposée.
+    </p>
+  </div>
+  <div class="tools">
+    <input class="field grow" id="company-search"
+      placeholder="Rechercher AXA, IKEA, Orange…"
+      aria-label="Rechercher une entreprise">
+    <select class="field" id="company-sector"
+      aria-label="Secteur">
+      <option value="">Tous les secteurs</option>
+    </select>
+    <label class="btn">
+      <input type="checkbox" id="fav-only">
+      Favoris uniquement
+    </label>
+  </div>
+  <div class="alphabet" id="alphabet"></div>
+  <div class="row spread" style="margin:17px 0">
+    <span class="small muted" id="company-count"></span>
+    <button class="btn slim" id="company-reset">Réinitialiser</button>
+  </div>
+  <div class="grid" id="company-grid"></div>
+  <div style="text-align:center;margin-top:20px">
+    <button id="company-more" class="btn">Afficher plus d'entreprises</button>
+  </div>
+</section>
+
+<!-- SECTEURS -->
+<section class="page" id="page-secteurs">
+  <div class="section-header">
+    <div class="eyebrow">Filtrer les pistes</div>
+    <h2>Explorer les secteurs</h2>
+    <p>Découvre les entreprises classées par domaine d'activité.</p>
+  </div>
+  <div id="sector-cards" class="grid"></div>
+</section>
+
+<!-- DROITS -->
+<section class="page" id="page-droits">
+  <div class="section-header">
+    <div class="eyebrow">Comprendre le cadre légal</div>
+    <h2>Tes droits au travail</h2>
+    <p>Repères généraux sur les conditions d'emploi en France.</p>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <span class="pill">Secteur privé</span>
+      <h3>Tenue et signes religieux</h3>
+      <p>
+        Le port d'un signe religieux n'est pas automatiquement interdit
+        dans une entreprise privée. Certaines restrictions peuvent
+        être applicables sous conditions légales.
+      </p>
+    </article>
+    <article class="card">
+      <span class="pill">Secteur public</span>
+      <h3>Neutralité</h3>
+      <p>
+        Les agents publics sont soumis au principe de neutralité
+        religieuse dans l'exercice de leurs fonctions.
+      </p>
+    </article>
+    <article class="card">
+      <span class="pill">Organisation</span>
+      <h3>Pauses et pratique religieuse</h3>
+      <p>
+        Les modalités des pauses et d'éventuels aménagements
+        dépendent de l'organisation du travail et des règles applicables.
+      </p>
+    </article>
+  </div>
+  <div class="panel">
+    <h3>Sources officielles</h3>
+    <div class="row">
+      <a class="btn" target="_blank" rel="noopener noreferrer"
+        href="https://www.service-public.fr/">Service-Public ↗</a>
+      <a class="btn" target="_blank" rel="noopener noreferrer"
+        href="https://www.defenseurdesdroits.fr/">Défenseur des droits ↗</a>
+      <a class="btn" target="_blank" rel="noopener noreferrer"
+        href="https://www.legifrance.gouv.fr/">Légifrance ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- VERIFIER -->
+<section class="page" id="page-verifier">
+  <div class="section-header">
+    <div class="eyebrow">Avant de postuler</div>
+    <h2>Vérifier les conditions du poste</h2>
+    <p>Une liste de questions importantes avant d'accepter un emploi.</p>
+  </div>
+  <div class="panel">
+    <h3>Ma checklist</h3>
+    <div id="checklist"></div>
+    <button class="btn slim" id="clear-checklist">Tout décocher</button>
+  </div>
+</section>
+
+<!-- CANDIDATURES -->
+<section class="page" id="page-candidatures">
+  <div class="section-header">
+    <div class="eyebrow">1 · Enregistrer</div>
+    <h2>Candidatures</h2>
+    <p>
+      Ajoute une candidature déjà envoyée ou en préparation.
+      Elle apparaîtra automatiquement dans la rubrique Suivi.
+    </p>
+  </div>
+
+  <div class="panel">
+    <form id="apply-form">
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="apply-company">Entreprise *</label>
+          <input class="field" id="apply-company"
+            required maxlength="120"
+            placeholder="Ex. IKEA" list="companies-list">
+          <datalist id="companies-list"></datalist>
+        </div>
+        <div class="form-item">
+          <label for="apply-job">Intitulé du poste *</label>
+          <input class="field" id="apply-job"
+            required maxlength="150"
+            placeholder="Ex. Assistante administrative">
+        </div>
+        <div class="form-item">
+          <label for="apply-date">Date de candidature *</label>
+          <input class="field" id="apply-date"
+            type="date" required>
+        </div>
+        <div class="form-item">
+          <label for="apply-status">Statut</label>
+          <select class="field" id="apply-status">
+            <option>À préparer</option>
+            <option selected>Envoyée</option>
+            <option>Relance à faire</option>
+            <option>Entretien</option>
+            <option>Offre reçue</option>
+            <option>Refusée</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label for="apply-contract">Contrat</label>
+          <select class="field" id="apply-contract">
+            <option>Non précisé</option>
+            <option>CDI</option><option>CDD</option>
+            <option>Alternance</option><option>Stage</option>
+            <option>Intérim</option><option>Freelance</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label for="apply-channel">Canal utilisé</label>
+          <select class="field" id="apply-channel">
+            <option>Site carrière</option>
+            <option>Indeed</option><option>LinkedIn</option>
+            <option>France Travail</option>
+            <option>E-mail</option><option>Autre</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label for="apply-location">Lieu du poste</label>
+          <input class="field" id="apply-location"
+            placeholder="Ex. Paris 12e">
+        </div>
+        <div class="form-item">
+          <label for="apply-salary">Salaire / horaires</label>
+          <input class="field" id="apply-salary"
+            placeholder="Ex. 17 € brut/h, 20 h/semaine">
+        </div>
+        <div class="form-item full">
+          <label for="apply-url">Lien de l'annonce</label>
+          <input class="field" id="apply-url"
+            type="url" placeholder="https://...">
+        </div>
+        <div class="form-item full">
+          <label for="apply-notes">Notes personnelles</label>
+          <textarea class="field" id="apply-notes"
+            placeholder="Contact RH, questions, réponse reçue…"></textarea>
+        </div>
+      </div>
+
+      <div class="notice">
+        Ce formulaire ne transmet pas la candidature à l'employeur.
+        Il sert à enregistrer tes démarches personnelles.
+      </div>
+
+      <div class="row">
+        <button type="submit" class="btn primary" id="save-application">
+          Enregistrer et voir le suivi →
+        </button>
+        <button type="button" class="btn" id="reset-application">
+          Effacer le formulaire
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- SUIVI -->
+<section class="page" id="page-suivi">
+  <div class="section-header">
+    <div class="eyebrow">2 · Organiser</div>
+    <h2>Suivi des candidatures</h2>
+    <p>
+      Consulte toutes tes candidatures, actualise les statuts,
+      ajoute des notes ou modifie une fiche.
+    </p>
+  </div>
+  <div class="grid four stats" id="follow-stats"></div>
+  <div class="tools">
+    <input class="field grow" id="follow-search"
+      placeholder="Rechercher une entreprise ou un poste">
+    <select class="field" id="follow-filter">
+      <option value="">Tous les statuts</option>
+      <option>À préparer</option><option>Envoyée</option>
+      <option>Relance à faire</option><option>Entretien</option>
+      <option>Offre reçue</option><option>Refusée</option>
+    </select>
+    <button class="btn" data-go="candidatures">
+      + Nouvelle candidature
+    </button>
+  </div>
+  <div id="follow-list"></div>
+</section>
+
+<!-- PLATEFORMES -->
+<section class="page" id="page-plateformes">
+  <div class="section-header">
+    <div class="eyebrow">Sites et réseaux</div>
+    <h2>Où chercher un emploi ?</h2>
+    <p>
+      Sites spécialisés et moteurs de recherche d'emploi,
+      avec accès aux pages disponibles.
+    </p>
+  </div>
+  <div class="grid" id="platform-grid"></div>
+</section>
+
+<!-- MESSAGES -->
+<section class="page" id="page-messages">
+  <div class="section-header">
+    <div class="eyebrow">Contacter un recruteur</div>
+    <h2>Messages RH</h2>
+    <p>Prépare une candidature spontanée, une question ou une relance.</p>
+  </div>
+  <div class="panel">
+    <div class="form-grid">
+      <div class="form-item">
+        <label>Type de message</label>
+        <select class="field" id="mail-type">
+          <option value="initial">Premier contact</option>
+          <option value="conditions">Conditions du poste</option>
+          <option value="relance">Relance</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <label>Entreprise</label>
+        <input class="field" id="mail-company"
+          placeholder="Nom de l'entreprise">
+      </div>
+      <div class="form-item">
+        <label>Métier</label>
+        <input class="field" id="mail-job"
+          value="assistante administrative">
+      </div>
+      <div class="form-item">
+        <label>Signature</label>
+        <input class="field" id="mail-name"
+          placeholder="Ton prénom et nom">
+      </div>
+    </div>
+    <h3 style="margin-top:25px">Aperçu du message</h3>
+    <div class="letter" id="mail-preview"></div>
+    <div class="row" style="margin-top:15px">
+      <button class="btn primary" id="mail-copy">
+        Copier le message
+      </button>
+      <a class="btn" id="mail-open">Ouvrir ma messagerie ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="page" id="page-faq">
+  <div class="section-header">
+    <div class="eyebrow">Aide</div>
+    <h2>Questions fréquentes</h2>
+  </div>
+  <div class="panel">
+    <h3>Le site envoie-t-il les candidatures ?</h3>
+    <p>
+      Non. Il permet d'accéder aux sites carrière et
+      d'enregistrer tes candidatures personnelles.
+    </p>
+    <hr>
+    <h3>Où sont enregistrées mes données ?</h3>
+    <p>
+      Dans le navigateur de ton appareil.
+      Pense à exporter régulièrement le fichier CSV.
+    </p>
+    <hr>
+    <h3>Les entreprises acceptent-elles toutes le voile ?</h3>
+    <p>
+      Non. Leur présence dans l'annuaire ne confirme pas
+      leur politique vestimentaire.
+    </p>
+    <hr>
+    <h3>Le site fonctionne-t-il avec GitHub Pages ?</h3>
+    <p>Oui, sans serveur ni installation.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  © <span id="current-year"></span> JobHub IDF · Annuaire indépendant.
+  Aucun partenariat ni accord vestimentaire n'est présumé.
+</footer>
+
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+"use strict";
+
+// =================================================
+// BASE DES ENTREPRISES
+// =================================================
 
 const GROUPES = {
-  "Autres secteurs": "ADP GSI | Alcatel | Alinéa | Alloga | Amazon | Amplifon | Aramis Auto | Aramis Group | Atelier Création | Banque BPC | Banque HSBC | Barkids | Basic-Fit | Boulangerie Pains & Traditions | Bouygues | BTEC | Cabinet comptable Cikela | Cabinet comptable HMCC | Cajoo | Canon France | Carglass | CausAffect | CEA | Cegé | Ciblex France | Circana | Citadium | Colgate | Daher | Davidson | Décathlon | Dej | Delachaux | Deliveroo | Dell | Disneyland Paris | EasyJet | Électronique Dépôt | Espace Job | Europe Assistance | Expleo | Fastned | General Electric | Go Sport | Group 11 | Groupe One Care | Groupe Sonepar | Hachette | HEC | Homeserve | Hôtel F1 | Hôtel HOV | INSEAD | Jeff de Bruges | Kingou Garde | Konica Minolta | Konta | Kruidvat | La Collective | LFC | Loysa | MAE | McKinsey | Minelli | Netindus | Noria | Odyssée RH | ONG Conseil | Opticien Briand | Orange Business | P&G | Phone City | Proximus | Raja Group | Régis | Rubix | Sage | Seb | Sefi | Seignollet | Simplon | Sitel | Socass | Solvay | Stellantis | Target | TF1 | Uber Eats | UFCV | Verisure | Zalando",
+"Autres secteurs": `ADP GSI | Alcatel | Alinéa | Alloga | Amazon | Amplifon | Aramis Auto | Aramis Group | Atelier Création | Banque BPC | Banque HSBC | Barkids | Basic-Fit | Boulangerie Pains & Traditions | Bouygues | BTEC | Cabinet comptable Cikela | Cabinet comptable HMCC | Cajoo | Canon France | Carglass | CausAffect | CEA | Cegé | Ciblex France | Circana | Citadium | Colgate | Daher | Davidson | Décathlon | Dej | Delachaux | Deliveroo | Dell | Disneyland Paris | EasyJet | Électronique Dépôt | Espace Job | Europe Assistance | Expleo | Fastned | General Electric | Go Sport | Group 11 | Groupe One Care | Groupe Sonepar | Hachette | HEC | Homeserve | Hôtel F1 | Hôtel HOV | INSEAD | Jeff de Bruges | Kingou Garde | Konica Minolta | Konta | Kruidvat | La Collective | LFC | Loysa | MAE | McKinsey | Minelli | Netindus | Noria | Odyssée RH | ONG Conseil | Opticien Briand | Orange Business | P&G | Phone City | Proximus | Raja Group | Régis | Rubix | Sage | Seb | Sefi | Seignollet | Simplon | Sitel | Socass | Solvay | Stellantis | Target | TF1 | Uber Eats | UFCV | Verisure | Zalando`,
 
-  "Bureau & services": "Accenture | Acticall | Adecco | Alstom | AXA | B2S | Banque BNP Paribas | Banque Société Générale | Blue Link | Booking | Cabinet recrutement Cold | Capgemini | Comdata | Concentrix | Crédit Agricole | Docaposte | Foundever | Gemo | Generali | Groupe BEL | Havas | Havas Media | Hello Bank | KPMG | Lefebvre Dalloz | MAAF | Onepoint | Orange | Publicis | Qualicontact | Randstad | SFR | Société Générale | Téléperformance | Webhelp | WTW",
+"Bureau & services": `Accenture | Acticall | Adecco | Alstom | AXA | B2S | Banque BNP Paribas | Banque Société Générale | Blue Link | Booking | Cabinet recrutement Cold | Capgemini | Comdata | Concentrix | Crédit Agricole | Docaposte | Foundever | Gemo | Generali | Groupe BEL | Havas | Havas Media | Hello Bank | KPMG | Lefebvre Dalloz | MAAF | Onepoint | Orange | Publicis | Qualicontact | Randstad | SFR | Société Générale | Téléperformance | Webhelp | WTW`,
 
-  "Commerce": "Action | Aldi | Biocoop | Bon Marché | Boulanger | Boulangerie Paul | Breizh Café | Brico Dépôt | Burger King | Carrefour | Casino | Centrakor | Darty | Domino's Pizza | Gifi | Grand Frais | HelloFresh | IKEA | Intermarché | KFC | La Poste | La Redoute | Lidl | Metro | Normal | Paul | Starbucks",
+"Commerce": `Action | Aldi | Biocoop | Bon Marché | Boulanger | Boulangerie Paul | Breizh Café | Brico Dépôt | Burger King | Carrefour | Casino | Centrakor | Darty | Domino's Pizza | Gifi | Grand Frais | HelloFresh | IKEA | Intermarché | KFC | La Poste | La Redoute | Lidl | Metro | Normal | Paul | Starbucks`,
 
-  "Industrie & transport": "Aéroports de Paris | Air France | Air Liquide | Bouygues Construction | Danone | DHL | EDF | Engie | FedEx | Framatome | OTIS | Renault | Renault Trucks | Safran | Saint-Gobain | Schneider Electric | Siemens | Suez | Thales | TotalEnergies | Toyota | UPS | Valeo | Veolia | Veritas | Vinci | Volvo | XPO Logistics",
+"Industrie & transport": `Aéroports de Paris | Air France | Air Liquide | Bouygues Construction | Danone | DHL | EDF | Engie | FedEx | Framatome | OTIS | Renault | Renault Trucks | Safran | Saint-Gobain | Schneider Electric | Siemens | Suez | Thales | TotalEnergies | Toyota | UPS | Valeo | Veolia | Veritas | Vinci | Volvo | XPO Logistics`,
 
-  "Mode & beauté": "Adidas | Bershka | Cache Cache | Courir | Foot Locker | H&M | JD Sports | Jennyfer | Kiabi | Kiko | Kiko Milano | L'Oréal | Leroy Merlin | Lush | MAC Cosmetics | Marionnaud | Natalys | Nike | Nocibé | Pandora | Pimkie | Primark | Rituals | Snipes | Soeur | Uniqlo | Urban Outfitters | Yves Rocher | Zara | Zeeman",
+"Mode & beauté": `Adidas | Bershka | Cache Cache | Courir | Foot Locker | H&M | JD Sports | Jennyfer | Kiabi | Kiko | Kiko Milano | L'Oréal | Leroy Merlin | Lush | MAC Cosmetics | Marionnaud | Natalys | Nike | Nocibé | Pandora | Pimkie | Primark | Rituals | Snipes | Soeur | Uniqlo | Urban Outfitters | Yves Rocher | Zara | Zeeman`,
 
-  "Santé & social": "Apprentis d'Auteuil | Association Renaissance | Cerballiance | Croix-Rouge française | Educazen | Essilor | Family Sphere | Human Appeal | Neyssa Shop | Pfizer | Roche Diagnostics | Roche Pharma | Sanofi | Yoopala",
+"Santé & social": `Apprentis d'Auteuil | Association Renaissance | Cerballiance | Croix-Rouge française | Educazen | Essilor | Family Sphere | Human Appeal | Neyssa Shop | Pfizer | Roche Diagnostics | Roche Pharma | Sanofi | Yoopala`,
 
-  "Tech & digital": "Amadeus | Apple | CGI | Dassault Systèmes | Ericsson | Google | Huawei | IBM | Intertek | Leboncoin | Microsoft | NXP | OVHcloud | PayPlug | Planity | Salesforce | Segula Technologies | Sopra Steria | TikTok | Worldline"
+"Tech & digital": `Amadeus | Apple | CGI | Dassault Systèmes | Ericsson | Google | Huawei | IBM | Intertek | Leboncoin | Microsoft | NXP | OVHcloud | PayPlug | Planity | Salesforce | Segula Technologies | Sopra Steria | TikTok | Worldline`
 };
 
-// ============================================================
-// 172 LIENS VERS LES PAGES CARRIÈRE / RECRUTEMENT
-// ============================================================
-// Quand le lien manque, on affiche une recherche ciblée.
-// Les URLs peuvent évoluer avec le temps.
-// ============================================================
+// =================================================
+// LIENS DE RECRUTEMENT
+// Certains portails sont susceptibles de changer.
+// =================================================
 
-const CARRIERES = Object.fromEntries(`
+const carrieresTexte = `
 Accenture;https://www.accenture.com/fr-fr/careers
 Action;https://www.action.jobs/fr-fr
 Adecco;https://www.adecco.fr/offres-d-emploi/
@@ -467,978 +963,818 @@ Yves Rocher;https://recrutement.groupe-rocher.com/
 Zalando;https://jobs.zalando.com/
 Zara;https://www.inditexcareers.com/portalweb/fr
 Zeeman;https://www.zeeman.com/fr-fr/travailler-chez-zeeman
-`.trim().split('\n').map(x=>{
-  const i=x.indexOf(';');
-  return [x.slice(0,i),x.slice(i+1)];
-}));
+`;
 
-const ENTREPRISES=Object.entries(GROUPES).flatMap(
-  ([secteur,liste])=>
-    liste.split('|').map(nom=>({
+const CARRIERES = Object.fromEntries(
+  carrieresTexte.trim().split("\n").map(ligne=>{
+    const i=ligne.indexOf(";");
+    return [ligne.slice(0,i),ligne.slice(i+1)];
+  })
+);
+
+const ENTREPRISES = Object.entries(GROUPES)
+  .flatMap(([secteur,liste])=>
+    liste.split("|").map(nom=>({
       nom:nom.trim(),
       secteur,
-      url:CARRIERES[nom.trim()]||null
+      url:CARRIERES[nom.trim()]||""
     }))
-).sort((a,b)=>a.nom.localeCompare(b.nom,'fr'));
+  )
+  .sort((a,b)=>a.nom.localeCompare(b.nom,"fr"));
 
-// ============================================================
-// PLATEFORMES D'EMPLOI
-// ============================================================
+// =================================================
+// PLATEFORMES
+// =================================================
 
 const PLATEFORMES=[
-  ['EntreSœur','Emploi & services',
-   'https://www.entresoeur.fr/','Lien identifié'],
-  ['Super Sœur','Emploi & services',
-   'https://www.supersoeur.com/','Lien identifié'],
-  ['JobHijabFrance','Offres et réseau',
-   'https://fr.linkedin.com/company/jobhijabfrance','Page LinkedIn'],
-  ['Al-Wasil','Annonces',
-   'https://al-wasil.fr/jobs','Lien identifié'],
-  ['L’Emploi du Muslim','Emploi',
-   'https://lemploidumuslim.com/','Lien identifié'],
-  ['Super Frère','Emploi & services',
-   'https://superfrere.fr/emploi-musulman.html','Lien identifié'],
-  ['WorkHalal','Emploi international',
-   'https://www.workhalal.com/myjobs/signup.php','Lien identifié'],
-  ['JobHalal.com','Conseils, pas annonces',
-   'https://jobhalal.com/','Site de conseils'],
-  ['Umaplace','À identifier',
-   null,'Adresse officielle non confirmée'],
-  ['SO Emploi','À identifier',
-   null,'Adresse officielle non confirmée'],
-  ['Go Muslim','Historique',
-   'https://fr.linkedin.com/company/go-muslim',
-   'Fermeture du site signalée'],
-  ['WorkForSisters','À identifier',
-   null,'Adresse officielle non confirmée'],
-  ['Emploi Sœurs Musulmanes','Communauté',
-   'https://www.facebook.com/emploisoeursmusulmanes/','Page Facebook'],
-  ['France Travail','Site officiel',
-   'https://candidat.francetravail.fr/offres/recherche',
-   'Recherche d’annonces'],
-  ['Indeed','Emploi général',
-   'https://fr.indeed.com/','Recherche d’annonces'],
-  ['LinkedIn Emplois','Emploi général',
-   'https://fr.linkedin.com/jobs/','Recherche d’annonces']
+  ["EntreSœur","Annonces et services dédiés",
+    "https://www.entresoeur.fr/"],
+  ["Super Sœur","Services et entraide professionnelle",
+    "https://www.supersoeur.com/"],
+  ["JobHijabFrance","Offres et réseau LinkedIn",
+    "https://fr.linkedin.com/company/jobhijabfrance"],
+  ["Al-Wasil","Annonces et réseau professionnel",
+    "https://al-wasil.fr/jobs"],
+  ["JobHalal","Site de conseils, pas nécessairement des annonces",
+    "https://jobhalal.com/"],
+  ["Umaplace","Adresse officielle à confirmer",""],
+  ["SO Emploi","Adresse officielle à confirmer",""],
+  ["WorkForSisters","Page officielle à confirmer",""],
+  ["Emploi Sœurs Musulmanes","Communauté Facebook",
+    "https://www.facebook.com/emploisoeursmusulmanes/"],
+  ["France Travail","Offres et accompagnement",
+    "https://candidat.francetravail.fr/offres/recherche"],
+  ["Indeed","Recherche d'offres",
+    "https://fr.indeed.com/"],
+  ["LinkedIn Emplois","Offres et recruteurs",
+    "https://fr.linkedin.com/jobs/"],
+  ["HelloWork","Offres d'emploi",
+    "https://www.hellowork.com/fr-fr/"]
 ];
 
-// ============================================================
+const PISTES=[
+ ["Assistante administrative",
+  "Dossiers, e-mails, Excel et organisation.","administrative"],
+ ["Opératrice de saisie",
+  "Traitement et contrôle de documents numériques.","saisie de données"],
+ ["Assistante commerciale",
+  "Devis, commandes et suivi clients.","assistante commerciale"],
+ ["Gestionnaire back-office",
+  "Traitement de dossiers et suivi administratif.","back office"],
+ ["Support client par écrit",
+  "Réponses par e-mail et messagerie.","support client écrit"],
+ ["Aide-comptable",
+  "Factures et rapprochements. Formation parfois nécessaire.",
+  "aide comptable"]
+];
+
+// =================================================
+// OUTILS
+// =================================================
+
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+
+const KEY="jobhub-idf-candidatures-v1";
+const FAVKEY="jobhub-idf-favoris-v1";
+const CHECKKEY="jobhub-idf-checklist-v1";
+
+const STATUTS=[
+ "À préparer","Envoyée","Relance à faire",
+ "Entretien","Offre reçue","Refusée"
+];
+
+function lire(cle,defaut){
+  try{
+    return JSON.parse(localStorage.getItem(cle))??defaut;
+  }catch{
+    return defaut;
+  }
+}
+function sauver(cle,valeur){
+  try{
+    localStorage.setItem(cle,JSON.stringify(valeur));
+  }catch{
+    toast("Enregistrement local indisponible.");
+  }
+}
+function normaliser(s){
+  return String(s||"")
+   .normalize("NFD")
+   .replace(/[\u0300-\u036f]/g,"")
+   .toLowerCase();
+}
+function lienRecherche(nom){
+  return "https://www.google.com/search?q="+
+    encodeURIComponent(nom+" recrutement carrière site officiel");
+}
+function urlValide(url){
+  try{
+    return ["https:","http:"].includes(new URL(url).protocol);
+  }catch{return false}
+}
+function dateJour(){
+  const d=new Date();
+  return [
+    d.getFullYear(),
+    String(d.getMonth()+1).padStart(2,"0"),
+    String(d.getDate()).padStart(2,"0")
+  ].join("-");
+}
+function element(tag,classe="",texte=""){
+  const e=document.createElement(tag);
+  if(classe)e.className=classe;
+  if(texte)e.textContent=texte;
+  return e;
+}
+function bouton(texte,action,classe="btn"){
+  const b=element("button",classe,texte);
+  b.type="button";
+  b.onclick=action;
+  return b;
+}
+function lien(texte,url,classe="btn slim"){
+  const a=element("a",classe,texte+" ↗");
+  a.href=url;
+  a.target="_blank";
+  a.rel="noopener noreferrer";
+  return a;
+}
+
+let candidatures=lire(KEY,[]);
+let favoris=lire(FAVKEY,[]);
+let cases=lire(CHECKKEY,[]);
+
+if(!Array.isArray(candidatures))candidatures=[];
+if(!Array.isArray(favoris))favoris=[];
+if(!Array.isArray(cases))cases=[];
+
+let edition=null;
+let lettre="";
+let affichage=24;
+let toastTimer;
+
+function toast(message){
+  const n=$("#toast");
+  n.textContent=message;
+  n.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>n.classList.remove("show"),3500);
+}
+
+function naviguer(page){
+  if(!$("#page-"+page))return;
+
+  $$(".page").forEach(e=>{
+    e.classList.toggle("active",e.id==="page-"+page);
+  });
+
+  $$("[data-nav]").forEach(b=>{
+    b.classList.toggle("active",b.dataset.nav===page);
+  });
+
+  history.replaceState(null,"","#"+page);
+  window.scrollTo({top:0,behavior:"smooth"});
+
+  if(page==="suivi")afficherSuivi();
+  if(page==="entreprises")afficherEntreprises();
+}
+
+$$("[data-nav]").forEach(b=>{
+  b.onclick=()=>naviguer(b.dataset.nav);
+});
+$$("[data-go]").forEach(b=>{
+  b.onclick=()=>naviguer(b.dataset.go);
+});
+$$("[data-link]").forEach(a=>{
+  a.onclick=e=>{
+    e.preventDefault();
+    naviguer(a.dataset.link);
+  };
+});
+
+// =================================================
+// COMPTEURS
+// =================================================
+
+function compteurs(){
+  $("#stat-companies").textContent=ENTREPRISES.length;
+  $("#stat-careers").textContent=Object.keys(CARRIERES).length;
+  $("#stat-applied").textContent=candidatures.length;
+  $("#stat-active").textContent=candidatures.filter(c=>
+    !["Refusée","Offre reçue"].includes(c.status)
+  ).length;
+  $("#nav-count").textContent=
+    candidatures.length?"("+candidatures.length+")":"";
+}
+
+// =================================================
 // MÉTIERS
-// ============================================================
+// =================================================
 
-const METIERS=[
-  ['Assistante administrative',
-   'Dossiers, courriels, suivi et organisation.','Priorité'],
-  ['Opératrice de saisie',
-   'Saisie et contrôle de données sur ordinateur.','Priorité'],
-  ['Assistante commerciale',
-   'Devis, commandes et suivi clients.','Priorité'],
-  ['Gestionnaire back-office',
-   'Traitement de dossiers sans accueil permanent.','Priorité'],
-  ['Secrétaire médicale privée',
-   'Rendez-vous et dossiers patients ; formation parfois demandée.',
-   'À explorer'],
-  ['Support client écrit',
-   'Réponses par e-mail ou messagerie, selon le poste.','À explorer'],
-  ['Assistante RH junior',
-   'Gestion administrative du personnel et recrutement.','Évolution'],
-  ['Aide-comptable',
-   'Factures, classement et rapprochements ; compétences à acquérir.',
-   'Évolution']
-];
+function afficherPistes(){
+  const zone=$("#piste-cards");
+  zone.replaceChildren();
 
-const ONGLETS=[
-  ['accueil','Accueil'],
-  ['entreprises','Entreprises'],
-  ['plateformes','Plateformes'],
-  ['metiers','Métiers & offres'],
-  ['candidatures','Mes candidatures'],
-  ['messages','Messages RH'],
-  ['droits','Droits & conseils'],
-  ['profil','Mon profil']
-];
+  PISTES.forEach(([nom,description,recherche])=>{
+    const carte=element("article","card");
+    carte.append(
+      element("span","pill","Métier à explorer"),
+      element("h3","",nom),
+      element("p","",description)
+    );
 
-const initialProfil={
-  prenom:'',
-  lieu:'Paris',
-  heures:'15–25 h/semaine',
-  trajet:'30 minutes',
-  poste:'Assistante administrative',
-  contrat:'Temps partiel'
+    const url="https://fr.indeed.com/jobs?q="+
+      encodeURIComponent(recherche+" temps partiel")+
+      "&l=Paris";
+
+    const bas=element("div","bottom");
+    bas.append(lien("Rechercher les offres",url));
+    carte.append(bas);
+    zone.append(carte);
+  });
+}
+
+// =================================================
+// SECTEURS
+// =================================================
+
+function afficherSecteurs(){
+  const zone=$("#sector-cards");
+  const select=$("#company-sector");
+
+  Object.entries(GROUPES).forEach(([nom,liste])=>{
+    select.add(new Option(nom,nom));
+
+    const carte=element("article","card");
+    carte.append(
+      element("span","pill",liste.split("|").length+" entreprises"),
+      element("h3","",nom),
+      element("p","","Explore les entreprises de ce secteur.")
+    );
+
+    const bas=element("div","bottom");
+    bas.append(bouton("Voir les entreprises →",()=>{
+      select.value=nom;
+      lettre="";
+      affichage=24;
+      naviguer("entreprises");
+    },"btn primary slim"));
+
+    carte.append(bas);
+    zone.append(carte);
+  });
+}
+
+// =================================================
+// ANNUAIRE ALPHABÉTIQUE
+// =================================================
+
+function afficherAlphabet(){
+  const zone=$("#alphabet");
+
+  ["Tous",..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"].forEach(l=>{
+    const b=bouton(l,()=>{
+      lettre=l==="Tous"?"":l;
+      affichage=24;
+      afficherEntreprises();
+    });
+    b.dataset.letter=l;
+    zone.append(b);
+  });
+}
+
+function afficherEntreprises(){
+  const q=normaliser($("#company-search").value);
+  const secteur=$("#company-sector").value;
+  const favorisSeulement=$("#fav-only").checked;
+
+  const resultats=ENTREPRISES.filter(e=>
+    (!secteur||e.secteur===secteur)&&
+    (!lettre||normaliser(e.nom).startsWith(normaliser(lettre)))&&
+    (!favorisSeulement||favoris.includes(e.nom))&&
+    normaliser(e.nom+" "+e.secteur).includes(q)
+  );
+
+  $$("#alphabet button").forEach(b=>{
+    b.classList.toggle("active",
+      b.dataset.letter===(lettre||"Tous"));
+  });
+
+  $("#company-count").textContent=
+    resultats.length+" entreprise(s) · "+
+    favoris.length+" favori(s)";
+
+  const zone=$("#company-grid");
+  zone.replaceChildren();
+
+  resultats.slice(0,affichage).forEach(e=>{
+    const carte=element("article","card");
+
+    const entete=element("div","company-line");
+    entete.append(element("div","icon-letter",e.nom[0]));
+
+    const infos=element("div");
+    const nom=lien(e.nom,e.url||lienRecherche(e.nom),"");
+    nom.textContent=e.nom;
+    nom.style.fontWeight="800";
+    nom.style.fontSize="17px";
+
+    infos.append(nom,element("small","",e.secteur));
+    entete.append(infos);
+
+    carte.append(
+      entete,
+      element("span","pill"+(e.url?"":" amber"),
+        e.url?"Portail carrière renseigné":"Recherche ciblée seulement"),
+      element("p","",
+        "Conditions vestimentaires et horaires à confirmer.")
+    );
+
+    const actions=element("div","row bottom");
+
+    actions.append(lien(
+      e.url?"Voir les carrières":"Chercher le recrutement",
+      e.url||lienRecherche(e.nom),
+      "btn primary slim"
+    ));
+
+    actions.append(bouton(
+      favoris.includes(e.nom)?"★ Favori":"☆ Favori",
+      ()=>{
+        favoris=favoris.includes(e.nom)
+          ?favoris.filter(n=>n!==e.nom)
+          :[...favoris,e.nom];
+        sauver(FAVKEY,favoris);
+        afficherEntreprises();
+      },
+      "btn slim"
+    ));
+
+    actions.append(bouton("+ Candidature",()=>{
+      effacerFormulaire();
+      $("#apply-company").value=e.nom;
+      $("#apply-url").value=e.url||"";
+      naviguer("candidatures");
+      $("#apply-job").focus();
+    },"btn slim"));
+
+    carte.append(actions);
+    zone.append(carte);
+  });
+
+  $("#company-more").hidden=resultats.length<=affichage;
+
+  if(!resultats.length){
+    zone.append(element("div","empty",
+      "Aucun résultat. Essaie une autre recherche."));
+  }
+}
+
+["company-search","company-sector","fav-only"].forEach(id=>{
+  $("#"+id).addEventListener("input",()=>{
+    affichage=24;
+    afficherEntreprises();
+  });
+});
+
+$("#company-reset").onclick=()=>{
+  $("#company-search").value="";
+  $("#company-sector").value="";
+  $("#fav-only").checked=false;
+  lettre="";
+  affichage=24;
+  afficherEntreprises();
 };
 
-// ============================================================
-// STOCKAGE LOCAL ET FONCTIONS UTILES
-// ============================================================
+$("#company-more").onclick=()=>{
+  affichage+=24;
+  afficherEntreprises();
+};
 
-function useStockage(cle,defaut){
-  const [v,setV]=useState(()=>{
-    try{
-      return JSON.parse(localStorage.getItem('nour-'+cle))??defaut;
-    }catch{
-      return defaut;
-    }
+// =================================================
+// PLATEFORMES
+// =================================================
+
+function afficherPlateformes(){
+  const zone=$("#platform-grid");
+
+  PLATEFORMES.forEach(([nom,description,url])=>{
+    const carte=element("article","card");
+
+    carte.append(
+      element("span","pill"+(url?"":" amber"),
+        url?"Lien renseigné":"Lien à vérifier"),
+      element("h3","",nom),
+      element("p","",description)
+    );
+
+    const bas=element("div","bottom");
+    bas.append(lien(
+      url?"Ouvrir la page":"Rechercher la page",
+      url||lienRecherche(nom+" emploi"),
+      "btn primary slim"
+    ));
+
+    carte.append(bas);
+    zone.append(carte);
   });
-  useEffect(()=>{
-    try{
-      localStorage.setItem('nour-'+cle,JSON.stringify(v));
-    }catch{}
-  },[cle,v]);
-  return [v,setV];
 }
 
-const normaliser=s=>(s||'')
-  .normalize('NFD')
-  .replace(/[\u0300-\u036f]/g,'')
-  .toLowerCase();
+// =================================================
+// CHECKLIST
+// =================================================
 
-const rechercheEntreprise=n=>
-  `https://www.google.com/search?q=${
-    encodeURIComponent(n+' recrutement carrière site officiel')
-  }`;
+const QUESTIONS=[
+ "Le salaire et les heures sont-ils clairement indiqués ?",
+ "Le lieu et le trajet sont-ils compatibles ?",
+ "Le contrat est-il précisé ?",
+ "Les règles vestimentaires ont-elles été clarifiées ?",
+ "Les pauses et horaires sont-ils connus ?",
+ "Le poste est-il physiquement adapté ?",
+ "L'identité du recruteur a-t-elle été vérifiée ?"
+];
 
-const rechercheOffre=(m,lieu)=>
-  `https://fr.indeed.com/jobs?q=${
-    encodeURIComponent(m+' temps partiel')
-  }&l=${encodeURIComponent(lieu||'Paris')}`;
+function afficherChecklist(){
+  const zone=$("#checklist");
+  zone.replaceChildren();
 
-function Lien({href,children,classe='btn'}){
-  return <a className={classe}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer">
-    {children} ↗
-  </a>;
+  QUESTIONS.forEach((texte,i)=>{
+    const label=element("label","checkrow");
+    const input=element("input");
+    input.type="checkbox";
+    input.checked=cases.includes(i);
+
+    input.onchange=()=>{
+      cases=input.checked
+        ?[...new Set([...cases,i])]
+        :cases.filter(x=>x!==i);
+      sauver(CHECKKEY,cases);
+    };
+
+    label.append(input,element("span","",texte));
+    zone.append(label);
+  });
 }
 
-function Titre({surtitre,titre,texte}){
-  return <>
-    <div className="eyebrow">{surtitre}</div>
-    <h1 className="title">{titre}</h1>
-    <p className="lead">{texte}</p>
-  </>;
+$("#clear-checklist").onclick=()=>{
+  cases=[];
+  sauver(CHECKKEY,cases);
+  afficherChecklist();
+};
+
+// =================================================
+// CANDIDATURES : FORMULAIRE
+// =================================================
+
+const CHAMPS=[
+ "company","job","date","status","contract",
+ "channel","location","salary","url","notes"
+];
+
+function effacerFormulaire(){
+  edition=null;
+  $("#apply-form").reset();
+  $("#apply-date").value=dateJour();
+  $("#save-application").textContent=
+    "Enregistrer et voir le suivi →";
 }
 
-function csvExport(lignes){
-  const noms=['Entreprise','Poste','Statut','Date','Notes','Lien'];
-  const data=[
-    noms,
-    ...lignes.map(a=>[
-      a.nom,a.poste,a.statut,a.date,a.notes,a.url
-    ])
+$("#reset-application").onclick=effacerFormulaire;
+
+$("#apply-form").onsubmit=e=>{
+  e.preventDefault();
+
+  const valeurs={};
+  CHAMPS.forEach(c=>{
+    valeurs[c]=$("#apply-"+c).value.trim();
+  });
+
+  if(!valeurs.company||!valeurs.job){
+    toast("Indique l'entreprise et le poste.");
+    return;
+  }
+
+  if(valeurs.url&&!urlValide(valeurs.url)){
+    toast("Le lien doit commencer par https:// ou http://");
+    return;
+  }
+
+  if(edition){
+    candidatures=candidatures.map(c=>
+      c.id===edition?{...c,...valeurs}:c
+    );
+  }else{
+    const id=(typeof crypto!=="undefined"&&crypto.randomUUID)
+      ?crypto.randomUUID()
+      :String(Date.now())+"-"+Math.random();
+
+    candidatures.unshift({
+      ...valeurs,
+      id,
+      createdAt:new Date().toISOString()
+    });
+  }
+
+  sauver(KEY,candidatures);
+  compteurs();
+  effacerFormulaire();
+
+  $("#follow-filter").value="";
+  $("#follow-search").value="";
+  naviguer("suivi");
+  toast("Candidature enregistrée dans le suivi.");
+};
+
+function modifierCandidature(id){
+  const c=candidatures.find(x=>x.id===id);
+  if(!c)return;
+
+  edition=id;
+
+  CHAMPS.forEach(champ=>{
+    $("#apply-"+champ).value=c[champ]||"";
+  });
+
+  $("#save-application").textContent=
+    "Enregistrer les modifications →";
+  naviguer("candidatures");
+}
+
+// =================================================
+// SUIVI : TABLEAU DE BORD
+// =================================================
+
+function afficherSuivi(){
+  const stats=$("#follow-stats");
+  stats.replaceChildren();
+
+  const mesures=[
+    [candidatures.length,"Total"],
+    [candidatures.filter(c=>c.status==="Envoyée").length,"Envoyées"],
+    [candidatures.filter(c=>c.status==="Entretien").length,"Entretiens"],
+    [candidatures.filter(c=>c.status==="Offre reçue").length,"Offres reçues"]
   ];
-  const csv='\uFEFF'+data.map(r=>
-    r.map(x=>'"'+String(x||'').replaceAll('"','""')+'"')
-      .join(';')
-  ).join('\r\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
-  const a=document.createElement('a');
-  const u=URL.createObjectURL(blob);
-  a.href=u;
-  a.download='nour-candidatures.csv';
-  a.click();
-  setTimeout(()=>URL.revokeObjectURL(u),1000);
+
+  mesures.forEach(([nombre,titre])=>{
+    const bloc=element("div","metric");
+    bloc.append(
+      element("strong","",String(nombre)),
+      element("span","",titre)
+    );
+    stats.append(bloc);
+  });
+
+  const q=normaliser($("#follow-search").value);
+  const statut=$("#follow-filter").value;
+
+  const resultats=candidatures.filter(c=>
+    (!statut||c.status===statut)&&
+    normaliser(c.company+" "+c.job+" "+c.location).includes(q)
+  );
+
+  const zone=$("#follow-list");
+  zone.replaceChildren();
+
+  if(!resultats.length){
+    zone.append(element("div","empty",
+      candidatures.length
+        ?"Aucune candidature ne correspond aux filtres."
+        :"Aucune candidature enregistrée pour le moment."));
+    return;
+  }
+
+  resultats.forEach(c=>{
+    const carte=element("article","app-card");
+
+    const entete=element("div","row spread");
+    entete.append(
+      element("h3","",c.company),
+      element("span","status",c.status)
+    );
+    carte.append(entete);
+
+    carte.append(element(
+      "div","metadata",
+      [c.job,c.location,c.contract,c.date]
+        .filter(Boolean).join(" · ")
+    ));
+
+    const corps=element("div","review");
+
+    const zoneStatut=element("div","form-item");
+    zoneStatut.append(element("label","","Statut"));
+
+    const select=element("select","field");
+    STATUTS.forEach(s=>select.add(new Option(s,s)));
+    select.value=c.status||"Envoyée";
+
+    select.onchange=()=>{
+      c.status=select.value;
+      sauver(KEY,candidatures);
+      compteurs();
+      afficherSuivi();
+      toast("Statut mis à jour.");
+    };
+
+    zoneStatut.append(select);
+
+    const zoneNotes=element("div","form-item");
+    zoneNotes.append(element("label","","Notes de suivi"));
+
+    const notes=element("textarea","field");
+    notes.placeholder="Contact, réponse, prochaine action…";
+    notes.value=c.notes||"";
+
+    notes.onchange=()=>{
+      c.notes=notes.value;
+      sauver(KEY,candidatures);
+      toast("Notes enregistrées.");
+    };
+
+    zoneNotes.append(notes);
+    corps.append(zoneStatut,zoneNotes);
+    carte.append(corps);
+
+    const actions=element("div","row");
+    actions.style.marginTop="13px";
+
+    actions.append(bouton(
+      "Modifier la fiche",
+      ()=>modifierCandidature(c.id),
+      "btn slim"
+    ));
+
+    if(c.url&&urlValide(c.url)){
+      actions.append(lien("Annonce / carrière",c.url));
+    }
+
+    actions.append(bouton("Supprimer",()=>{
+      if(!confirm("Supprimer cette candidature ?"))return;
+
+      candidatures=candidatures.filter(x=>x.id!==c.id);
+      sauver(KEY,candidatures);
+      compteurs();
+      afficherSuivi();
+      toast("Candidature supprimée.");
+    },"btn slim danger"));
+
+    carte.append(actions);
+    zone.append(carte);
+  });
 }
 
-// ============================================================
-// APPLICATION REACT
-// ============================================================
+$("#follow-search").addEventListener("input",afficherSuivi);
+$("#follow-filter").addEventListener("change",afficherSuivi);
 
-function App(){
- const [onglet,setOnglet]=useState('accueil');
- const [profil,setProfil]=useStockage('profil',initialProfil);
- const [favoris,setFavoris]=useStockage('favoris',[]);
- const [suivi,setSuivi]=useStockage('suivi',[]);
- const [texte,setTexte]=useState('');
- const [secteur,setSecteur]=useState('Tous');
- const [favorisSeuls,setFavorisSeuls]=useState(false);
- const [quantite,setQuantite]=useState(30);
- const [recherchePlateforme,setRecherchePlateforme]=useState('');
- const [note,setNote]=useState('');
- const [modele,setModele]=useState('candidature');
- const [nomEntreprise,setNomEntreprise]=useState('');
- const [posteMessage,setPosteMessage]=useState('Assistante administrative');
- const [manuel,setManuel]=useState('');
- const [manuelPoste,setManuelPoste]=useState('');
+// =================================================
+// EXPORT CSV POUR EXCEL
+// =================================================
 
- const selection=useMemo(()=>
-   ENTREPRISES.filter(e=>
-     (secteur==='Tous'||e.secteur===secteur)&&
-     (!favorisSeuls||favoris.includes(e.nom))&&
-     normaliser(e.nom+' '+e.secteur).includes(normaliser(texte))
-   ),[texte,secteur,favorisSeuls,favoris]);
+function exporterCSV(){
+  const colonnes=[
+    ["company","Entreprise"],
+    ["job","Poste"],
+    ["date","Date"],
+    ["status","Statut"],
+    ["contract","Contrat"],
+    ["channel","Canal"],
+    ["location","Lieu"],
+    ["salary","Salaire / heures"],
+    ["url","Lien"],
+    ["notes","Notes"]
+  ];
 
- const ouvrir=t=>{
-   setOnglet(t);
-   window.scrollTo({top:0,behavior:'smooth'});
- };
+  const lignes=[
+    colonnes.map(c=>c[1]),
+    ...candidatures.map(c=>colonnes.map(
+      champ=>c[champ[0]]||""
+    ))
+  ];
 
- const signaler=msg=>{
-   setNote(msg);
-   setTimeout(()=>setNote(''),3000);
- };
+  const contenu="\uFEFF"+lignes.map(l=>
+    l.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(";")
+  ).join("\r\n");
 
- const aimer=nom=>
-   setFavoris(f=>f.includes(nom)
-     ?f.filter(x=>x!==nom)
-     :[...f,nom]);
+  const blob=new Blob([contenu],{
+    type:"text/csv;charset=utf-8"
+  });
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
 
- const ajouter=(nom,url='',poste='À définir')=>{
-   if(!nom.trim())return;
-   setSuivi(v=>v.some(x=>x.nom.toLowerCase()===nom.toLowerCase())
-     ?v
-     :[...v,{
-       id:Date.now()+'-'+Math.random(),
-       nom,poste,
-       statut:'À contacter',
-       date:new Date().toLocaleDateString('fr-FR'),
-       notes:'',
-       url
-     }]);
-   signaler('Ajouté au suivi des candidatures');
- };
+  a.href=url;
+  a.download="jobhub-idf-candidatures.csv";
+  document.body.append(a);
+  a.click();
+  a.remove();
 
- const modifier=(id,champ,val)=>
-   setSuivi(v=>v.map(x=>x.id===id
-     ?{...x,[champ]:val}
-     :x));
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  toast("Export CSV prêt.");
+}
 
- const envoyer=()=>{
-   if(!manuel.trim())return;
-   ajouter(manuel.trim(),'',manuelPoste||'À définir');
-   setManuel('');
-   setManuelPoste('');
- };
+$("#export-top").onclick=exporterCSV;
 
- // Génération du message aux recruteurs
- const message=(()=>{
-   const cible=nomEntreprise
-     ?' au sein de '+nomEntreprise
-     :' dans votre entreprise';
-   const poste=posteMessage||profil.poste;
+// =================================================
+// MESSAGES POUR LES RECRUTEURS
+// =================================================
 
-   if(modele==='conditions')
-     return `Bonjour,
+function genererMessage(){
+  const type=$("#mail-type").value;
+  const entreprise=$("#mail-company").value.trim();
+  const poste=$("#mail-job").value.trim()||"poste administratif";
+  const signature=$("#mail-name").value.trim()||"[Prénom et nom]";
+  const chez=entreprise?" chez "+entreprise:"";
 
-Je souhaite me renseigner sur les opportunités de ${poste}${cible}. Pourriez-vous m'indiquer si un règlement vestimentaire s'applique au poste, notamment concernant le port d'un foulard, et comment sont organisées les pauses et les horaires ?
+  let message="";
+
+  if(type==="conditions"){
+    message=`Bonjour,
+
+Je souhaite me renseigner sur les postes de ${poste}${chez}.
+
+Pourriez-vous m'indiquer les règles vestimentaires applicables à ce poste, notamment concernant le port du foulard, ainsi que l'organisation des pauses et des horaires ?
 
 Je vous remercie pour votre retour.
 
 Cordialement,
-${profil.prenom}`;
+${signature}`;
+  }
+  else if(type==="relance"){
+    message=`Bonjour,
 
-   if(modele==='relance')
-     return `Bonjour,
+Je me permets de revenir vers vous concernant ma candidature pour un poste de ${poste}${chez}.
 
-Je me permets de revenir vers vous concernant ma candidature pour un poste de ${poste}${cible}. Je reste très intéressée et disponible pour un échange.
+Je reste très intéressée par cette opportunité et disponible pour un échange.
+
+Cordialement,
+${signature}`;
+  }
+  else{
+    message=`Bonjour,
+
+Je me permets de vous contacter concernant un poste de ${poste}${chez}.
+
+Titulaire du baccalauréat et disposant d'une expérience en vente et en accueil, je recherche actuellement un emploi à temps partiel en Île-de-France.
+
+Je serais ravie d'échanger avec vous sur les opportunités disponibles.
 
 Je vous remercie pour votre attention.
 
 Cordialement,
-${profil.prenom}`;
-
-   return `Bonjour,
-
-Je souhaite vous proposer ma candidature pour un poste de ${poste}${cible}. Titulaire du baccalauréat et ayant une expérience en vente et en accueil, je suis organisée, sérieuse et à l'aise dans la relation client.
-
-Je recherche idéalement un contrat à temps partiel de ${profil.heures}, dans le secteur de ${profil.lieu}. Je serais ravie d'échanger avec vous sur les postes disponibles et les modalités de travail.
-
-Cordialement,
-${profil.prenom}`;
- })();
-
- const copier=async()=>{
-   try{
-     await navigator.clipboard.writeText(message);
-     signaler('Message copié');
-   }catch{
-     signaler('Sélectionne le message et copie-le');
-   }
- };
-
- const nav=<>
-   {ONGLETS.map(([id,libelle])=>
-     <button key={id}
-       className={onglet===id?'active':''}
-       onClick={()=>ouvrir(id)}>
-       {libelle}
-       {id==='candidatures'&&suivi.length>0
-         ?' ('+suivi.length+')'
-         :''}
-     </button>
-   )}
- </>;
-
- return <div className="shell">
-
-  {/* NAVIGATION ORDINATEUR */}
-  <aside className="sidebar">
-   <div className="brand">
-    <div className="mark">N</div>
-    <div>
-     <strong>Nour Carrière</strong>
-     <small>Ta carrière, tes choix.</small>
-    </div>
-   </div>
-   <nav className="menu">{nav}</nav>
-   <div className="sidebar-note">
-    Un annuaire d'exploration : l'apparition d'une entreprise
-    ne garantit pas qu'elle accepte le voile ou dispose de
-    postes ouverts.
-   </div>
-  </aside>
-
-  <div>
-   {/* NAVIGATION MOBILE */}
-   <div className="mobilebar">
-    <div className="mobilebrand">N · Nour Carrière</div>
-    <nav className="mobilemenu">{nav}</nav>
-   </div>
-
-   <main className="content">
-    <div className="top">
-     <span className="eyebrow">Espace carrière · Île-de-France</span>
-     <span className="hint">Données privées dans ton navigateur</span>
-    </div>
-
-    {/* =====================================================
-        ACCUEIL
-       ===================================================== */}
-    {onglet==='accueil'&&<>
-     <div className="hero">
-      <div style={{fontSize:12,fontWeight:800,letterSpacing:2}}>
-       BIENVENUE SUR NOUR CARRIÈRE
-      </div>
-      <h1>
-       Un emploi à la hauteur de tes compétences,
-       dans le respect de tes convictions.
-      </h1>
-      <p>
-       Découvre des entreprises, trouve leurs pages de recrutement,
-       prépare tes messages et organise tes candidatures
-       au même endroit.
-      </p>
-      <div className="row">
-       <button className="btn" onClick={()=>ouvrir('entreprises')}>
-        Explorer les entreprises →
-       </button>
-       <button className="btn" onClick={()=>ouvrir('plateformes')}>
-        Voir les plateformes →
-       </button>
-      </div>
-     </div>
-
-     <div className="grid intro-cards">
-      <div className="stat">
-       <b>{ENTREPRISES.length}</b>
-       <span>Entreprises référencées</span>
-      </div>
-      <div className="stat">
-       <b>{Object.keys(CARRIERES).length}</b>
-       <span>Liens de recrutement renseignés</span>
-      </div>
-      <div className="stat">
-       <b>{suivi.length}</b>
-       <span>Candidatures enregistrées</span>
-      </div>
-     </div>
-
-     <h2 className="section">Commencer ta recherche</h2>
-     <div className="grid">
-      <div className="card">
-       <span className="tag">01 · Découvrir</span>
-       <h3>Entreprises & recrutement</h3>
-       <p>
-        Recherche par nom, activité, favoris et accès direct
-        aux pages carrière disponibles.
-       </p>
-       <button className="btn primary actions"
-         onClick={()=>ouvrir('entreprises')}>
-        Voir l'annuaire →
-       </button>
-      </div>
-
-      <div className="card">
-       <span className="tag">02 · Postuler</span>
-       <h3>Sites spécialisés</h3>
-       <p>
-        EntreSœur, Super Sœur, Al-Wasil,
-        JobHijabFrance et moteurs d'offres.
-       </p>
-       <button className="btn primary actions"
-         onClick={()=>ouvrir('plateformes')}>
-        Ouvrir les plateformes →
-       </button>
-      </div>
-
-      <div className="card">
-       <span className="tag">03 · S'organiser</span>
-       <h3>Mes candidatures</h3>
-       <p>
-        Garde une trace des postes, des entretiens et des relances,
-        même sans compte.
-       </p>
-       <button className="btn primary actions"
-         onClick={()=>ouvrir('candidatures')}>
-        Suivre mes démarches →
-       </button>
-      </div>
-     </div>
-
-     <div className="notice warn">
-      <strong>Important :</strong> les noms d'entreprises proviennent
-      de listes communautaires. Leur présence ne prouve pas l'acceptation
-      du voile, la possibilité de prier pendant le travail ou
-      l'existence d'une offre. Vérifie ces points auprès
-      de chaque recruteur.
-     </div>
-    </>}
-
-    {/* =====================================================
-        ENTREPRISES
-       ===================================================== */}
-    {onglet==='entreprises'&&<>
-     <Titre
-      surtitre="Annuaire entreprises"
-      titre="Les entreprises à explorer"
-      texte="Un clic ouvre le site carrière lorsqu'un lien est renseigné. Sinon, une recherche ciblée te permet de retrouver le recrutement de l'entreprise."
-     />
-
-     <div className="filters">
-      <input
-       className="field search"
-       aria-label="Rechercher une entreprise"
-       placeholder="Rechercher une entreprise (ex. AXA, IKEA, Orange...)"
-       value={texte}
-       onChange={e=>{
-        setTexte(e.target.value);
-        setQuantite(30);
-       }}
-      />
-
-      <select
-       aria-label="Filtrer par secteur"
-       className="field"
-       value={secteur}
-       onChange={e=>{
-        setSecteur(e.target.value);
-        setQuantite(30);
-       }}>
-       <option>Tous</option>
-       {Object.keys(GROUPES).map(c=>
-        <option key={c}>{c}</option>
-       )}
-      </select>
-
-      <label className="toggle">
-       <input type="checkbox"
-        checked={favorisSeuls}
-        onChange={e=>setFavorisSeuls(e.target.checked)}/>
-       Favoris seulement
-      </label>
-     </div>
-
-     <div className="row between" style={{marginBottom:15}}>
-      <div className="count">
-       {selection.length} entreprise(s) trouvée(s)
-       {' · '}{favoris.length} favoris
-      </div>
-      <button className="btn small"
-       onClick={()=>{
-        setTexte('');
-        setSecteur('Tous');
-        setFavorisSeuls(false);
-       }}>
-       Réinitialiser
-      </button>
-     </div>
-
-     {selection.length===0
-      ?<div className="empty">
-        Aucune entreprise trouvée. Essaie d'autres mots.
-       </div>
-      :<div className="grid">
-        {selection.slice(0,quantite).map(e=>
-         <article className="card" key={e.nom}>
-          <div className="row between" style={{flexWrap:'nowrap'}}>
-           <div className="company-name">
-            <div className="initial">{e.nom[0]}</div>
-            <div>
-             <h3>{e.nom}</h3>
-             <span>{e.secteur}</span>
-            </div>
-           </div>
-           <button
-            className="btn small"
-            aria-label={'Favori '+e.nom}
-            onClick={()=>aimer(e.nom)}>
-            {favoris.includes(e.nom)?'★':'☆'}
-           </button>
-          </div>
-
-          <span className={'tag '+(e.url?'':'amber')}>
-           {e.url?'Lien carrière renseigné':'Recherche de carrière'}
-          </span>
-
-          <p>
-           Port du voile, horaires, contrat et possibilités de pauses :
-           à confirmer avec le recruteur.
-          </p>
-
-          <div className="row actions">
-           <Lien
-            href={e.url||rechercheEntreprise(e.nom)}
-            classe="btn primary small">
-            {e.url?'Site carrière':'Rechercher'}
-           </Lien>
-
-           <button className="btn small"
-            onClick={()=>ajouter(
-             e.nom,e.url||rechercheEntreprise(e.nom)
-            )}>
-            + Suivre
-           </button>
-          </div>
-         </article>
-        )}
-       </div>
-     }
-
-     {selection.length>quantite&&
-      <div className="row"
-       style={{justifyContent:'center',margin:25}}>
-       <button className="btn primary"
-        onClick={()=>setQuantite(v=>v+30)}>
-        Afficher 30 autres entreprises
-        ({selection.length-quantite} restantes)
-       </button>
-      </div>
-     }
-
-     <div className="notice">
-      Certaines sociétés ont changé de nom ou utilisent le portail
-      carrière de leur groupe. Les adresses sont fournies comme points
-      de départ, sans validation en temps réel de chaque page.
-     </div>
-    </>}
-
-    {/* =====================================================
-        PLATEFORMES
-       ===================================================== */}
-    {onglet==='plateformes'&&<>
-     <Titre
-      surtitre="Réseaux & jobboards"
-      titre="Les plateformes pour postuler"
-      texte="Accède aux ressources spécialisées et généralistes. Les pages impossibles à identifier de manière fiable renvoient vers une recherche, jamais vers un faux site."
-     />
-
-     <div className="filters">
-      <input className="field search"
-       placeholder="Rechercher une plateforme"
-       aria-label="Rechercher une plateforme"
-       value={recherchePlateforme}
-       onChange={e=>setRecherchePlateforme(e.target.value)}
-      />
-     </div>
-
-     <div className="grid">
-      {PLATEFORMES.filter(p=>
-       normaliser(p.join(' ')).includes(
-        normaliser(recherchePlateforme)
-       )
-      ).map(([nom,genre,url,etat])=>
-       <article className="card" key={nom}>
-        <div className="initial">{nom[0]}</div>
-        <h3>{nom}</h3>
-        <span className={'tag '+(url?'':'amber')}>
-         {etat}
-        </span>
-        <p>
-         {genre}. Vérifie que les offres sont toujours disponibles
-         et que le recruteur est identifiable.
-        </p>
-        <div className="actions">
-         <Lien
-          href={url||rechercheEntreprise(nom+' emploi')}
-          classe="btn primary">
-          {url?'Ouvrir la plateforme':'Rechercher la page'}
-         </Lien>
-        </div>
-       </article>
-      )}
-     </div>
-
-     <div className="notice warn">
-      Attention aux frais d'inscription, annonces non datées
-      et demandes de documents personnels : vérifie les conditions
-      et l'identité des interlocuteurs avant de t'engager.
-     </div>
-    </>}
-
-    {/* =====================================================
-        MÉTIERS ET OFFRES
-       ===================================================== */}
-    {onglet==='metiers'&&<>
-     <Titre
-      surtitre="Idées de postes"
-      titre="Des métiers à cibler"
-      texte="Des recherches d'annonces actualisées pour un profil bac avec expérience en vente et accueil, à temps partiel. Aucun résultat n'est présenté ici comme une offre confirmée."
-     />
-
-     <div className="grid">
-      {METIERS.map(([nom,description,priorite])=>
-       <article className="card" key={nom}>
-        <span className="tag">{priorite}</span>
-        <h3>{nom}</h3>
-        <p>{description}</p>
-        <div className="actions">
-         <Lien
-          href={rechercheOffre(nom,profil.lieu)}
-          classe="btn primary">
-          Voir les offres
-         </Lien>
-        </div>
-       </article>
-      )}
-     </div>
-
-     <h2 className="section">Autres moteurs de recherche</h2>
-     <div className="row">
-      <Lien href="https://candidat.francetravail.fr/offres/recherche">
-       France Travail
-      </Lien>
-      <Lien href="https://fr.linkedin.com/jobs/">
-       LinkedIn Emplois
-      </Lien>
-      <Lien href="https://www.hellowork.com/fr-fr/">
-       Hellowork
-      </Lien>
-     </div>
-    </>}
-
-    {/* =====================================================
-        SUIVI DES CANDIDATURES
-       ===================================================== */}
-    {onglet==='candidatures'&&<>
-     <Titre
-      surtitre="Organisation personnelle"
-      titre="Mon suivi de candidatures"
-      texte="Ajoute des entreprises, change le statut des dossiers et exporte le tableau en CSV. Les données sont conservées localement dans cet appareil."
-     />
-
-     <div className="panel">
-      <h2 style={{marginTop:0}}>Ajouter une candidature</h2>
-
-      <div className="formgrid">
-       <div className="formgroup">
-        <label>Entreprise</label>
-        <input className="field"
-         value={manuel}
-         onChange={e=>setManuel(e.target.value)}
-         placeholder="Nom de l'entreprise"/>
-       </div>
-       <div className="formgroup">
-        <label>Poste</label>
-        <input className="field"
-         value={manuelPoste}
-         onChange={e=>setManuelPoste(e.target.value)}
-         placeholder="Intitulé du poste"/>
-       </div>
-      </div>
-
-      <div className="row" style={{marginTop:12}}>
-       <button className="btn primary" onClick={envoyer}>
-        Ajouter au tableau
-       </button>
-       <button className="btn" onClick={()=>csvExport(suivi)}>
-        Exporter CSV ↓
-       </button>
-      </div>
-     </div>
-
-     {suivi.length===0
-      ?<div className="empty">
-        Aucune candidature enregistrée. Ajoute une entreprise
-        depuis l'annuaire ou ici.
-       </div>
-      :<div className="panel scroll">
-        <table>
-         <thead>
-          <tr>
-           <th>Entreprise</th>
-           <th>Poste</th>
-           <th>Statut</th>
-           <th>Date</th>
-           <th>Notes</th>
-           <th>Action</th>
-          </tr>
-         </thead>
-         <tbody>
-          {suivi.map(a=>
-           <tr key={a.id}>
-            <td>
-             <strong>{a.nom}</strong>
-             {a.url&&
-              <div>
-               <Lien href={a.url} classe="">Lien</Lien>
-              </div>
-             }
-            </td>
-            <td>
-             <input className="field"
-              aria-label={'Poste '+a.nom}
-              value={a.poste}
-              onChange={e=>modifier(
-               a.id,'poste',e.target.value
-              )}/>
-            </td>
-            <td>
-             <select className="field"
-              aria-label={'Statut '+a.nom}
-              value={a.statut}
-              onChange={e=>modifier(
-               a.id,'statut',e.target.value
-              )}>
-              {[
-               'À contacter','Envoyée','Relance',
-               'Entretien','Acceptée','Refusée'
-              ].map(v=><option key={v}>{v}</option>)}
-             </select>
-            </td>
-            <td>{a.date}</td>
-            <td>
-             <input className="field"
-              aria-label={'Notes '+a.nom}
-              value={a.notes}
-              placeholder="Retour RH…"
-              onChange={e=>modifier(
-               a.id,'notes',e.target.value
-              )}/>
-            </td>
-            <td>
-             <button className="btn small danger"
-              onClick={()=>setSuivi(v=>
-               v.filter(x=>x.id!==a.id)
-              )}>
-              Supprimer
-             </button>
-            </td>
-           </tr>
-          )}
-         </tbody>
-        </table>
-       </div>
-     }
-    </>}
-
-    {/* =====================================================
-        MESSAGES RH
-       ===================================================== */}
-    {onglet==='messages'&&<>
-     <Titre
-      surtitre="Contact direct"
-      titre="Rédige tes messages RH"
-      texte="Prépare un message personnalisé pour candidater, poser une question sur le règlement vestimentaire ou relancer une entreprise. Aucun envoi automatique."
-     />
-
-     <div className="panel">
-      <div className="formgrid">
-       <div className="formgroup">
-        <label>Type de message</label>
-        <select className="field"
-         value={modele}
-         onChange={e=>setModele(e.target.value)}>
-         <option value="candidature">Candidature spontanée</option>
-         <option value="conditions">Questions sur les conditions</option>
-         <option value="relance">Relance</option>
-        </select>
-       </div>
-
-       <div className="formgroup">
-        <label>Entreprise</label>
-        <input className="field"
-         value={nomEntreprise}
-         onChange={e=>setNomEntreprise(e.target.value)}
-         placeholder="Ex. AXA"/>
-       </div>
-
-       <div className="formgroup full">
-        <label>Poste visé</label>
-        <input className="field"
-         value={posteMessage}
-         onChange={e=>setPosteMessage(e.target.value)}
-         placeholder="Ex. Assistante administrative"/>
-       </div>
-      </div>
-
-      <h2 className="section">Aperçu</h2>
-      <div className="draft">{message}</div>
-
-      <div className="row" style={{marginTop:15}}>
-       <button className="btn primary" onClick={copier}>
-        Copier le message
-       </button>
-       <a className="btn"
-        href={
-         'mailto:?subject='+
-         encodeURIComponent('Candidature – '+posteMessage)+
-         '&body='+encodeURIComponent(message)
-        }>
-        Ouvrir mon e-mail ↗
-       </a>
-      </div>
-     </div>
-
-     <div className="notice">
-      Pour postuler réellement, ouvre le portail de recrutement,
-      cherche une annonce compatible puis utilise la candidature
-      du site. Un simple e-mail ne remplace pas toujours
-      le dépôt du CV.
-     </div>
-    </>}
-
-    {/* =====================================================
-        DROITS ET CONSEILS
-       ===================================================== */}
-    {onglet==='droits'&&<>
-     <Titre
-      surtitre="Ressources pratiques"
-      titre="Connaître ses droits"
-      texte="Quelques repères généraux en France, à distinguer des règles applicables à chaque poste et entreprise."
-     />
-
-     <div className="panel">
-      <h2>Port du voile et emploi</h2>
-      <p className="lead">
-       Dans le secteur privé, le port d'un signe religieux
-       n'est pas automatiquement interdit. Certaines restrictions
-       peuvent être légalement justifiées selon les fonctions,
-       la sécurité et des règles de neutralité applicables.
-       Les agents publics sont soumis à une obligation de neutralité
-       dans l'exercice de leurs fonctions.
-      </p>
-
-      <h2>Prières et horaires</h2>
-      <p className="lead">
-       Les pauses et les éventuels aménagements doivent être
-       discutés avec l'employeur dans le respect de l'organisation
-       et des règles applicables. Le télétravail ne garantit pas
-       automatiquement une liberté totale d'horaires.
-      </p>
-
-      <h2>Discrimination</h2>
-      <p className="lead">
-       Le recrutement ne doit pas reposer sur une discrimination
-       illicite fondée sur la religion. En cas de doute, tu peux
-       consulter le Défenseur des droits et des sources officielles.
-      </p>
-
-      <div className="row">
-       <Lien href="https://www.service-public.fr/">
-        Service Public
-       </Lien>
-       <Lien href="https://www.defenseurdesdroits.fr/">
-        Défenseur des droits
-       </Lien>
-       <Lien href="https://www.legifrance.gouv.fr/">
-        Légifrance
-       </Lien>
-      </div>
-     </div>
-
-     <div className="panel">
-      <h2>Points à vérifier avant de signer</h2>
-      {[
-       'Salaire brut, heures garanties et type de contrat',
-       'Temps de transport et lieu de travail exact',
-       'Règlement vestimentaire applicable au poste',
-       'Organisation des pauses et télétravail',
-       'Missions réelles et éventuels objectifs de rendement'
-      ].map(t=>
-       <div className="listline" key={t}>✓ {t}</div>
-      )}
-     </div>
-
-     <div className="panel">
-      <h2>Formations et accompagnement</h2>
-      <div className="row">
-       <Lien href="https://www.francetravail.fr/candidat/en-formation.html">
-        Formations France Travail
-       </Lien>
-       <Lien href="https://www.unml.info/">
-        Missions locales
-       </Lien>
-       <Lien href="https://www.moncompteformation.gouv.fr/">
-        Mon Compte Formation
-       </Lien>
-      </div>
-     </div>
-    </>}
-
-    {/* =====================================================
-        PROFIL
-       ===================================================== */}
-    {onglet==='profil'&&<>
-     <Titre
-      surtitre="Préférences"
-      titre="Ma recherche d'emploi"
-      texte="Personnalise ton objectif et conserve tes préférences dans le navigateur. Elles seront utilisées dans les recherches et messages."
-     />
-
-     <div className="panel">
-      <div className="formgrid">
-       {[
-        ['prenom','Prénom (facultatif)'],
-        ['lieu','Ville / département'],
-        ['heures','Heures par semaine'],
-        ['trajet','Temps de trajet maximum'],
-        ['poste','Poste souhaité'],
-        ['contrat','Type de contrat']
-       ].map(([k,l])=>
-        <div className="formgroup" key={k}>
-         <label>{l}</label>
-         <input className="field"
-          value={profil[k]}
-          onChange={e=>setProfil(p=>({
-           ...p,[k]:e.target.value
-          }))}/>
-        </div>
-       )}
-      </div>
-
-      <div className="notice">
-       Profil enregistré automatiquement dans cet appareil.
-       Attention : vider les données du navigateur peut effacer
-       ton suivi et tes favoris.
-      </div>
-     </div>
-    </>}
-
-    {/* PIED DE PAGE */}
-    <footer className="footer">
-     Nour Carrière · Annuaire indépendant d'orientation
-     professionnelle · Aucun partenariat ni politique
-     d'acceptation du voile n'est présumé pour les entreprises
-     citées. Les liens et offres peuvent évoluer.
-    </footer>
-
-   </main>
-  </div>
-
-  {note&&
-   <div className="toast" role="status">
-    {note}
-   </div>
+${signature}`;
   }
- </div>;
+
+  $("#mail-preview").textContent=message;
+
+  $("#mail-open").href=
+    "mailto:?subject="+encodeURIComponent("Candidature — "+poste)+
+    "&body="+encodeURIComponent(message);
+
+  return message;
 }
 
-// LANCEMENT DE L'APPLICATION
-ReactDOM.createRoot(
- document.getElementById('root')
-).render(<App/>);
+["mail-type","mail-company","mail-job","mail-name"].forEach(id=>{
+  $("#"+id).addEventListener("input",genererMessage);
+});
 
+$("#mail-copy").onclick=async()=>{
+  try{
+    await navigator.clipboard.writeText(genererMessage());
+    toast("Message copié.");
+  }catch{
+    toast("Sélectionne le message pour le copier.");
+  }
+};
+
+// =================================================
+// INITIALISATION
+// =================================================
+
+$("#current-year").textContent=new Date().getFullYear();
+
+ENTREPRISES.forEach(e=>{
+  $("#companies-list").add(new Option(e.nom,e.nom));
+});
+
+$("#apply-date").value=dateJour();
+
+afficherPistes();
+afficherSecteurs();
+afficherAlphabet();
+afficherPlateformes();
+afficherChecklist();
+afficherEntreprises();
+afficherSuivi();
+genererMessage();
+compteurs();
+
+const pageInitiale=decodeURIComponent(
+  location.hash.replace("#","")
+);
+
+if($("#page-"+pageInitiale)){
+  naviguer(pageInitiale);
+}
 </script>
 </body>
 </html>
-
