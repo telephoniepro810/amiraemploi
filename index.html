@@ -1,1 +1,1444 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#113d3e">
+<title>Nour Carrière — Trouve un emploi qui te correspond</title>
+<style>
+:root{
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+  color:#1b3435;
+  background:#f6f9f8;
+  --green:#125a59;
+  --dark:#103a3c;
+  --soft:#e7f4ef;
+  --line:#dce9e4;
+  --muted:#647c79;
+}
+*{box-sizing:border-box}
+body{margin:0}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,
+select:focus-visible,textarea:focus-visible{
+  outline:3px solid #33aea1;
+  outline-offset:3px;
+}
+.shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  background:#fff;border-right:1px solid var(--line);
+  padding:25px 15px;position:sticky;top:0;height:100vh;
+  display:flex;flex-direction:column;
+}
+.brand{display:flex;align-items:center;gap:11px;padding:4px 10px 25px}
+.mark{
+  background:var(--dark);color:#fff;width:44px;height:44px;
+  border-radius:14px;display:grid;place-items:center;
+  font-size:25px;font-weight:800;
+}
+.brand strong{display:block;font-size:17px}
+.brand small{color:var(--muted);font-size:12px}
+.menu{display:grid;gap:5px}
+.menu button{
+  text-align:left;border:0;background:transparent;color:#536b69;
+  border-radius:11px;padding:13px 14px;font-weight:650;
+}
+.menu button.active,.menu button:hover{
+  background:#e5f3ef;color:var(--dark);
+}
+.sidebar-note{
+  margin-top:auto;background:var(--soft);padding:14px;
+  border-radius:14px;color:#48645f;font-size:12px;line-height:1.7;
+}
+.content{
+  padding:31px clamp(18px,4vw,58px) 55px;
+  min-width:0;max-width:1660px;width:100%;margin:auto;
+}
+.top{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;margin-bottom:24px;
+}
+.eyebrow{
+  font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:#36867d;font-size:11px;
+}
+.hint{color:var(--muted);font-size:13px}
+.mobilebar{display:none}
+.title{
+  font-size:clamp(28px,3.6vw,44px);line-height:1.13;
+  letter-spacing:-1.4px;color:#173b3d;margin:8px 0 12px;
+}
+.lead{
+  color:#667d7a;line-height:1.75;max-width:760px;
+  margin:0 0 26px;
+}
+.hero{
+  background:linear-gradient(125deg,#124649,#177969);
+  color:white;border-radius:25px;
+  padding:clamp(25px,4vw,45px);
+  display:grid;gap:15px;
+  box-shadow:0 18px 44px #14565422;
+}
+.hero h1{
+  font-size:clamp(29px,4vw,48px);
+  letter-spacing:-1.3px;line-height:1.14;
+  max-width:690px;margin:0;
+}
+.hero p{color:#e0efea;line-height:1.7;max-width:690px;margin:0}
+.hero .btn{border-color:#fff;color:#154b45;background:#fff}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.between{justify-content:space-between}
+.btn{
+  padding:10px 15px;min-height:42px;
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:7px;border:1px solid #bed5ce;border-radius:11px;
+  background:#fff;color:#155d57;font-weight:750;
+  font-size:13px;line-height:1.2;
+  transition:transform .15s,border .15s;
+}
+.btn:hover{transform:translateY(-1px);border-color:#458e84}
+.primary{background:var(--green);border-color:var(--green);color:white}
+.ghost{background:#eff7f3;border-color:#e5efeb}
+.danger{color:#aa4343}
+.small{padding:7px 10px;min-height:34px}
+.panel,.card,.stat{
+  background:white;border:1px solid #e0eae6;
+  border-radius:17px;box-shadow:0 9px 32px #153f4310;
+}
+.panel{padding:22px;margin:16px 0}
+.grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;
+}
+.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{
+  padding:20px;display:flex;flex-direction:column;
+  gap:12px;min-width:0;
+}
+.card h3{
+  font-size:17px;color:#173b3d;margin:0;
+  overflow-wrap:anywhere;
+}
+.card p{color:#657875;line-height:1.62;margin:0;font-size:13px}
+.card .actions{margin-top:auto;padding-top:4px}
+.stat{padding:18px}
+.stat b{display:block;font-size:29px;color:#184e4c}
+.stat span{color:var(--muted);font-size:13px}
+.section{
+  font-size:23px;color:#153d3e;letter-spacing:-.5px;
+  margin:30px 0 16px;
+}
+.tag{
+  font-size:11px;font-weight:800;display:inline-flex;
+  padding:6px 9px;background:#e6f4ee;border-radius:30px;
+  color:#24695e;width:max-content;max-width:100%;
+}
+.tag.amber{background:#fff3de;color:#92612b}
+.tag.gray{background:#f1f3f2;color:#667a75}
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
+.field{
+  border:1px solid #dce6e2;border-radius:11px;
+  background:white;padding:11px 12px;
+  min-height:43px;min-width:0;color:#1b4041;
+}
+.field.search{flex:1;min-width:220px}
+.field:focus{outline:2px solid #4caaa1}
+.toggle{
+  background:white;border:1px solid var(--line);
+  border-radius:11px;padding:10px 13px;
+  display:flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:650;
+}
+.initial{
+  width:46px;height:46px;background:#e8f5f1;color:var(--green);
+  display:grid;place-items:center;border-radius:14px;
+  font-size:19px;font-weight:900;
+}
+.company-name{display:flex;align-items:center;gap:12px}
+.company-name h3{margin-bottom:3px}
+.company-name span{font-size:12px;color:#788985}
+.notice{
+  background:#edf7f4;border-left:4px solid #367d75;
+  border-radius:11px;padding:16px 18px;font-size:13px;
+  line-height:1.7;color:#42635e;margin:19px 0;
+}
+.notice.warn{
+  background:#fff8ee;border-color:#b58b45;color:#725d38;
+}
+.intro-cards{margin-top:20px}
+.listline{
+  border-bottom:1px solid #e6eeea;padding:13px 0;
+  color:#4e6662;font-size:14px;line-height:1.65;
+}
+.listline:last-child{border:0}
+.formgrid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.formgroup{display:grid;gap:7px}
+.formgroup label{font-size:13px;font-weight:700;color:#486663}
+.formgroup .field{width:100%}
+.full{grid-column:1/-1}
+textarea.field{min-height:120px;resize:vertical;line-height:1.6}
+.draft{
+  white-space:pre-wrap;padding:20px;background:#f6faf8;
+  border:1px solid var(--line);border-radius:12px;
+  line-height:1.8;color:#3c5652;font-size:14px;
+  overflow-wrap:anywhere;
+}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:750px}
+th,td{
+  text-align:left;padding:12px 10px;
+  border-bottom:1px solid #e5eeeb;
+  vertical-align:top;font-size:13px;
+}
+th{font-size:12px;color:#778984;background:#f8fbfa}
+td .field{max-width:160px}
+table a{color:#0a6b69;text-decoration:underline}
+.empty{
+  text-align:center;padding:42px 20px;background:white;
+  border:1px dashed #d2e0dc;border-radius:17px;color:#687e77;
+}
+.footer{
+  border-top:1px solid var(--line);margin-top:45px;
+  padding-top:18px;color:#7b908b;font-size:12px;line-height:1.8;
+}
+.count{color:#6c8580;font-weight:650;font-size:13px}
+.toast{
+  position:fixed;bottom:22px;right:22px;z-index:20;
+  padding:14px 20px;border-radius:11px;
+  background:#123f40;color:#fff;
+  box-shadow:0 10px 35px #173f4055;max-width:320px;
+}
+@media(max-width:1100px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .shell{grid-template-columns:215px minmax(0,1fr)}
+}
+@media(max-width:740px){
+  .shell{display:block}
+  .sidebar{display:none}
+  .mobilebar{
+    position:sticky;top:0;z-index:5;display:block;
+    background:#fff;border-bottom:1px solid var(--line);
+    padding:10px 12px;
+  }
+  .mobilebrand{
+    font-weight:900;color:#114947;padding:5px 6px 10px;
+  }
+  .mobilemenu{
+    display:flex;overflow-x:auto;gap:6px;
+    padding-bottom:4px;scrollbar-width:thin;
+  }
+  .mobilemenu button{
+    white-space:nowrap;border:0;border-radius:9px;
+    padding:10px 12px;background:#f0f5f3;
+    color:#486d66;font-weight:700;font-size:12px;
+  }
+  .mobilemenu button.active{
+    background:#145b56;color:white;
+  }
+  .content{padding:20px 14px 45px}
+  .top{margin-bottom:18px}
+  .grid,.grid.two,.formgrid{grid-template-columns:1fr}
+  .hero{border-radius:17px}
+  .panel{padding:17px}
+  .filters .field,.filters .toggle{width:100%}
+  .filters .field.search{min-width:0}
+  .toast{left:16px;right:16px;bottom:16px}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- React et Babel : aucune installation nécessaire -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+const {useState,useEffect,useMemo}=React;
+
+// ============================================================
+// ANNUAIRE : 246 ENTREPRISES
+// ============================================================
+// Ces entreprises proviennent de listes partagées sur les
+// réseaux sociaux. Leur présence ne confirme pas leur
+// politique concernant le port du voile.
+// ============================================================
+
+const GROUPES = {
+  "Autres secteurs": "ADP GSI | Alcatel | Alinéa | Alloga | Amazon | Amplifon | Aramis Auto | Aramis Group | Atelier Création | Banque BPC | Banque HSBC | Barkids | Basic-Fit | Boulangerie Pains & Traditions | Bouygues | BTEC | Cabinet comptable Cikela | Cabinet comptable HMCC | Cajoo | Canon France | Carglass | CausAffect | CEA | Cegé | Ciblex France | Circana | Citadium | Colgate | Daher | Davidson | Décathlon | Dej | Delachaux | Deliveroo | Dell | Disneyland Paris | EasyJet | Électronique Dépôt | Espace Job | Europe Assistance | Expleo | Fastned | General Electric | Go Sport | Group 11 | Groupe One Care | Groupe Sonepar | Hachette | HEC | Homeserve | Hôtel F1 | Hôtel HOV | INSEAD | Jeff de Bruges | Kingou Garde | Konica Minolta | Konta | Kruidvat | La Collective | LFC | Loysa | MAE | McKinsey | Minelli | Netindus | Noria | Odyssée RH | ONG Conseil | Opticien Briand | Orange Business | P&G | Phone City | Proximus | Raja Group | Régis | Rubix | Sage | Seb | Sefi | Seignollet | Simplon | Sitel | Socass | Solvay | Stellantis | Target | TF1 | Uber Eats | UFCV | Verisure | Zalando",
+
+  "Bureau & services": "Accenture | Acticall | Adecco | Alstom | AXA | B2S | Banque BNP Paribas | Banque Société Générale | Blue Link | Booking | Cabinet recrutement Cold | Capgemini | Comdata | Concentrix | Crédit Agricole | Docaposte | Foundever | Gemo | Generali | Groupe BEL | Havas | Havas Media | Hello Bank | KPMG | Lefebvre Dalloz | MAAF | Onepoint | Orange | Publicis | Qualicontact | Randstad | SFR | Société Générale | Téléperformance | Webhelp | WTW",
+
+  "Commerce": "Action | Aldi | Biocoop | Bon Marché | Boulanger | Boulangerie Paul | Breizh Café | Brico Dépôt | Burger King | Carrefour | Casino | Centrakor | Darty | Domino's Pizza | Gifi | Grand Frais | HelloFresh | IKEA | Intermarché | KFC | La Poste | La Redoute | Lidl | Metro | Normal | Paul | Starbucks",
+
+  "Industrie & transport": "Aéroports de Paris | Air France | Air Liquide | Bouygues Construction | Danone | DHL | EDF | Engie | FedEx | Framatome | OTIS | Renault | Renault Trucks | Safran | Saint-Gobain | Schneider Electric | Siemens | Suez | Thales | TotalEnergies | Toyota | UPS | Valeo | Veolia | Veritas | Vinci | Volvo | XPO Logistics",
+
+  "Mode & beauté": "Adidas | Bershka | Cache Cache | Courir | Foot Locker | H&M | JD Sports | Jennyfer | Kiabi | Kiko | Kiko Milano | L'Oréal | Leroy Merlin | Lush | MAC Cosmetics | Marionnaud | Natalys | Nike | Nocibé | Pandora | Pimkie | Primark | Rituals | Snipes | Soeur | Uniqlo | Urban Outfitters | Yves Rocher | Zara | Zeeman",
+
+  "Santé & social": "Apprentis d'Auteuil | Association Renaissance | Cerballiance | Croix-Rouge française | Educazen | Essilor | Family Sphere | Human Appeal | Neyssa Shop | Pfizer | Roche Diagnostics | Roche Pharma | Sanofi | Yoopala",
+
+  "Tech & digital": "Amadeus | Apple | CGI | Dassault Systèmes | Ericsson | Google | Huawei | IBM | Intertek | Leboncoin | Microsoft | NXP | OVHcloud | PayPlug | Planity | Salesforce | Segula Technologies | Sopra Steria | TikTok | Worldline"
+};
+
+// ============================================================
+// 172 LIENS VERS LES PAGES CARRIÈRE / RECRUTEMENT
+// ============================================================
+// Quand le lien manque, on affiche une recherche ciblée.
+// Les URLs peuvent évoluer avec le temps.
+// ============================================================
+
+const CARRIERES = Object.fromEntries(`
+Accenture;https://www.accenture.com/fr-fr/careers
+Action;https://www.action.jobs/fr-fr
+Adecco;https://www.adecco.fr/offres-d-emploi/
+Adidas;https://careers.adidas-group.com/
+Aéroports de Paris;https://www.parisaeroport.fr/groupe/rh/carrieres
+Air France;https://recrutement.airfrance.com/
+Air Liquide;https://careers.airliquide.com/fr
+Aldi;https://www.aldi-recrute.fr/
+Alstom;https://jobsearch.alstom.com/
+Amadeus;https://amadeus.com/en/careers
+Amazon;https://www.amazon.jobs/fr/
+Apple;https://jobs.apple.com/fr-fr/search
+Apprentis d'Auteuil;https://recrutement.apprentis-auteuil.org/
+Aramis Auto;https://www.aramisauto.com/recrutement
+AXA;https://recrutement.axa.fr/
+Banque BNP Paribas;https://group.bnpparibas/emploi-carriere
+Banque HSBC;https://www.hsbc.com/careers
+Banque Société Générale;https://careers.societegenerale.com/
+Basic-Fit;https://careers.basic-fit.com/
+Bershka;https://www.inditexcareers.com/portalweb/fr
+Biocoop;https://recrutement.biocoop.fr/
+Blue Link;https://www.bluelinkservices.com/carrieres/
+Bon Marché;https://www.lvmh.com/fr/nous-rejoindre/nos-offres
+Booking;https://careers.booking.com/
+Boulanger;https://recrutement.boulanger.com/
+Boulangerie Paul;https://recrutement.paul.fr/
+Bouygues;https://www.bouygues.com/carrieres/
+Bouygues Construction;https://carrieres.bouygues-construction.com/
+Brico Dépôt;https://recrutement.bricodepot.fr/
+Burger King;https://recrutement.burgerking.fr/
+Canon France;https://fr.canon/fr/careers/
+Capgemini;https://www.capgemini.com/fr-fr/carrieres/
+Carglass;https://www.carglass.fr/nous-rejoindre
+Carrefour;https://recrute.carrefour.fr/
+Casino;https://recrutement.groupe-casino.fr/
+CEA;https://www.emploi.cea.fr/
+Cerballiance;https://www.cerballiance.fr/fr/carriere
+CGI;https://www.cgi.com/france/fr-fr/carrieres
+Colgate;https://jobs.colgate.com/
+Concentrix;https://jobs.concentrix.com/
+Courir;https://carrieres.courir.com/
+Crédit Agricole;https://groupecreditagricole.jobs/
+Croix-Rouge française;https://recrutement.croix-rouge.fr/
+Danone;https://careers.danone.com/
+Darty;https://recrutement.fnacdarty.com/
+Dassault Systèmes;https://careers.3ds.com/
+Décathlon;https://recrutement.decathlon.fr/
+Deliveroo;https://careers.deliveroo.co.uk/
+DHL;https://careers.dhl.com/
+Disneyland Paris;https://jobs.disneycareers.com/disneyland-paris
+Docaposte;https://www.docaposte.com/nous-rejoindre
+Domino's Pizza;https://recrutement.dominos.fr/
+EasyJet;https://careers.easyjet.com/
+EDF;https://www.edf.fr/edf-recrute
+Engie;https://jobs.engie.com/
+Ericsson;https://www.ericsson.com/en/careers
+Essilor;https://careers.essilorluxottica.com/
+Europe Assistance;https://www.europ-assistance.fr/nous-rejoindre
+Expleo;https://careers.expleo.com/
+FedEx;https://careers.fedex.com/
+Foot Locker;https://careers.footlocker.com/
+Foundever;https://jobs.foundever.com/
+Framatome;https://www.framatome.com/fr/candidats/
+General Electric;https://jobs.gecareers.com/
+Generali;https://www.generali.fr/carrieres/
+Gifi;https://recrutement.gifi.fr/
+Google;https://www.google.com/about/careers/applications/jobs/results/
+Grand Frais;https://www.grandfrais.com/recrutement
+Groupe BEL;https://careers.groupe-bel.com/
+Groupe Sonepar;https://www.sonepar.com/fr-fr/carrieres
+H&M;https://career.hm.com/fr-fr/
+Hachette;https://www.hachette-livre.fr/recrutement/
+Havas;https://www.havas.com/careers/
+Havas Media;https://www.havas.com/careers/
+Hello Bank;https://group.bnpparibas/emploi-carriere
+HelloFresh;https://careers.hellofresh.com/
+Homeserve;https://www.homeserve.fr/nous-rejoindre
+Hôtel F1;https://careers.accor.com/fr/fr
+Huawei;https://career.huawei.com/
+Human Appeal;https://humanappeal.fr/nous-rejoindre
+IBM;https://www.ibm.com/careers
+IKEA;https://jobs.ikea.com/fr
+Intermarché;https://www.carriere-mousquetaires.com/
+Intertek;https://www.intertek.com/careers/
+JD Sports;https://careers.jdsports.com/
+Jeff de Bruges;https://www.jeff-de-bruges.com/recrutement
+KFC;https://www.kfc-recrute.fr/
+Kiabi;https://recrutement.kiabi.com/
+Kiko;https://careers.kikocosmetics.com/
+Kiko Milano;https://careers.kikocosmetics.com/
+KPMG;https://kpmg.com/fr/fr/home/carrieres.html
+L'Oréal;https://careers.loreal.com/fr
+La Poste;https://www.laposterecrute.fr/
+La Redoute;https://www.laredoute.fr/content/nous-rejoindre/
+Leboncoin;https://careers.leboncoincorporate.com/
+Lefebvre Dalloz;https://www.lefebvre-dalloz.fr/recrutement/
+Leroy Merlin;https://recrute.leroymerlin.fr/
+Lidl;https://emplois.lidl.fr/
+Lush;https://weare.lush.com/careers/
+MAAF;https://recrutement.covea.com/
+MAC Cosmetics;https://jobs.elcompanies.com/
+Marionnaud;https://www.marionnaud.fr/recrutement
+McKinsey;https://www.mckinsey.com/careers
+Metro;https://recrutement.metro.fr/
+Microsoft;https://careers.microsoft.com/
+Natalys;https://www.idkids.com/recrutement
+Nike;https://careers.nike.com/
+Nocibé;https://www.nocibe.fr/recrutement
+Normal;https://jobs.normal.dk/
+Orange;https://orange.jobs/
+Orange Business;https://orange.jobs/
+OTIS;https://careers.otis.com/
+OVHcloud;https://careers.ovhcloud.com/
+P&G;https://www.pgcareers.com/
+Pandora;https://careers.pandoragroup.com/
+Paul;https://recrutement.paul.fr/
+PayPlug;https://www.payplug.com/fr/jobs/
+Pfizer;https://www.pfizer.com/about/careers
+Pimkie;https://www.pimkie.fr/recrutement
+Planity;https://www.welcometothejungle.com/fr/companies/planity/jobs
+Primark;https://careers.primark.com/fr/france-jobs
+Publicis;https://careers.publicisgroupe.com/
+Raja Group;https://www.raja.fr/recrutement
+Randstad;https://www.randstad.fr/emploi/
+Renault;https://www.renaultgroup.com/talents/
+Renault Trucks;https://www.renault-trucks.com/fr/carrieres
+Rituals;https://careers.rituals.com/fr-FR/
+Roche Diagnostics;https://careers.roche.com/
+Roche Pharma;https://careers.roche.com/
+Safran;https://www.safran-group.com/fr/carrieres
+Sage;https://www.sage.com/fr-fr/entreprise/carrieres/
+Saint-Gobain;https://joinus.saint-gobain.com/fr
+Salesforce;https://careers.salesforce.com/
+Sanofi;https://jobs.sanofi.com/
+Schneider Electric;https://www.se.com/fr/fr/about-us/careers/overview.jsp
+Seb;https://careers.groupeseb.com/
+Segula Technologies;https://careers.segulatechnologies.com/
+SFR;https://recrutement.sfr.com/
+Siemens;https://jobs.siemens.com/
+Simplon;https://simplon.co/recrutement
+Snipes;https://www.snipes.com/careers
+Société Générale;https://careers.societegenerale.com/
+Soeur;https://soeur-1711354805.teamtailor.com/
+Solvay;https://www.solvay.com/en/careers
+Sopra Steria;https://careers.soprasteria.com/
+Starbucks;https://www.starbucks.fr/carriere
+Stellantis;https://careers.stellantis.com/
+Suez;https://www.suez.com/fr/carrieres
+Téléperformance;https://jobs.teleperformance.fr/
+TF1;https://www.groupe-tf1.fr/fr/nous-rejoindre
+Thales;https://careers.thalesgroup.com/
+TikTok;https://careers.tiktok.com/
+TotalEnergies;https://careers.totalenergies.com/
+Toyota;https://www.toyota-europe.com/careers
+Uniqlo;https://www.fastretailing.com/eng/employment/
+UPS;https://www.jobs-ups.com/
+Urban Outfitters;https://www.urbn.com/careers
+Valeo;https://valeo.taleo.net/careersection/
+Veolia;https://jobs.veolia.com/
+Verisure;https://careers.verisure.com/
+Veritas;https://careers.bureauveritas.com/
+Vinci;https://jobs.vinci.com/
+Volvo;https://jobs.volvogroup.com/
+Webhelp;https://jobs.concentrix.com/
+Worldline;https://careers.worldline.com/
+WTW;https://careers.wtwco.com/
+XPO Logistics;https://jobs.xpo.com/
+Yoopala;https://www.yoopala.com/recrutement
+Yves Rocher;https://recrutement.groupe-rocher.com/
+Zalando;https://jobs.zalando.com/
+Zara;https://www.inditexcareers.com/portalweb/fr
+Zeeman;https://www.zeeman.com/fr-fr/travailler-chez-zeeman
+`.trim().split('\n').map(x=>{
+  const i=x.indexOf(';');
+  return [x.slice(0,i),x.slice(i+1)];
+}));
+
+const ENTREPRISES=Object.entries(GROUPES).flatMap(
+  ([secteur,liste])=>
+    liste.split('|').map(nom=>({
+      nom:nom.trim(),
+      secteur,
+      url:CARRIERES[nom.trim()]||null
+    }))
+).sort((a,b)=>a.nom.localeCompare(b.nom,'fr'));
+
+// ============================================================
+// PLATEFORMES D'EMPLOI
+// ============================================================
+
+const PLATEFORMES=[
+  ['EntreSœur','Emploi & services',
+   'https://www.entresoeur.fr/','Lien identifié'],
+  ['Super Sœur','Emploi & services',
+   'https://www.supersoeur.com/','Lien identifié'],
+  ['JobHijabFrance','Offres et réseau',
+   'https://fr.linkedin.com/company/jobhijabfrance','Page LinkedIn'],
+  ['Al-Wasil','Annonces',
+   'https://al-wasil.fr/jobs','Lien identifié'],
+  ['L’Emploi du Muslim','Emploi',
+   'https://lemploidumuslim.com/','Lien identifié'],
+  ['Super Frère','Emploi & services',
+   'https://superfrere.fr/emploi-musulman.html','Lien identifié'],
+  ['WorkHalal','Emploi international',
+   'https://www.workhalal.com/myjobs/signup.php','Lien identifié'],
+  ['JobHalal.com','Conseils, pas annonces',
+   'https://jobhalal.com/','Site de conseils'],
+  ['Umaplace','À identifier',
+   null,'Adresse officielle non confirmée'],
+  ['SO Emploi','À identifier',
+   null,'Adresse officielle non confirmée'],
+  ['Go Muslim','Historique',
+   'https://fr.linkedin.com/company/go-muslim',
+   'Fermeture du site signalée'],
+  ['WorkForSisters','À identifier',
+   null,'Adresse officielle non confirmée'],
+  ['Emploi Sœurs Musulmanes','Communauté',
+   'https://www.facebook.com/emploisoeursmusulmanes/','Page Facebook'],
+  ['France Travail','Site officiel',
+   'https://candidat.francetravail.fr/offres/recherche',
+   'Recherche d’annonces'],
+  ['Indeed','Emploi général',
+   'https://fr.indeed.com/','Recherche d’annonces'],
+  ['LinkedIn Emplois','Emploi général',
+   'https://fr.linkedin.com/jobs/','Recherche d’annonces']
+];
+
+// ============================================================
+// MÉTIERS
+// ============================================================
+
+const METIERS=[
+  ['Assistante administrative',
+   'Dossiers, courriels, suivi et organisation.','Priorité'],
+  ['Opératrice de saisie',
+   'Saisie et contrôle de données sur ordinateur.','Priorité'],
+  ['Assistante commerciale',
+   'Devis, commandes et suivi clients.','Priorité'],
+  ['Gestionnaire back-office',
+   'Traitement de dossiers sans accueil permanent.','Priorité'],
+  ['Secrétaire médicale privée',
+   'Rendez-vous et dossiers patients ; formation parfois demandée.',
+   'À explorer'],
+  ['Support client écrit',
+   'Réponses par e-mail ou messagerie, selon le poste.','À explorer'],
+  ['Assistante RH junior',
+   'Gestion administrative du personnel et recrutement.','Évolution'],
+  ['Aide-comptable',
+   'Factures, classement et rapprochements ; compétences à acquérir.',
+   'Évolution']
+];
+
+const ONGLETS=[
+  ['accueil','Accueil'],
+  ['entreprises','Entreprises'],
+  ['plateformes','Plateformes'],
+  ['metiers','Métiers & offres'],
+  ['candidatures','Mes candidatures'],
+  ['messages','Messages RH'],
+  ['droits','Droits & conseils'],
+  ['profil','Mon profil']
+];
+
+const initialProfil={
+  prenom:'',
+  lieu:'Paris',
+  heures:'15–25 h/semaine',
+  trajet:'30 minutes',
+  poste:'Assistante administrative',
+  contrat:'Temps partiel'
+};
+
+// ============================================================
+// STOCKAGE LOCAL ET FONCTIONS UTILES
+// ============================================================
+
+function useStockage(cle,defaut){
+  const [v,setV]=useState(()=>{
+    try{
+      return JSON.parse(localStorage.getItem('nour-'+cle))??defaut;
+    }catch{
+      return defaut;
+    }
+  });
+  useEffect(()=>{
+    try{
+      localStorage.setItem('nour-'+cle,JSON.stringify(v));
+    }catch{}
+  },[cle,v]);
+  return [v,setV];
+}
+
+const normaliser=s=>(s||'')
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g,'')
+  .toLowerCase();
+
+const rechercheEntreprise=n=>
+  `https://www.google.com/search?q=${
+    encodeURIComponent(n+' recrutement carrière site officiel')
+  }`;
+
+const rechercheOffre=(m,lieu)=>
+  `https://fr.indeed.com/jobs?q=${
+    encodeURIComponent(m+' temps partiel')
+  }&l=${encodeURIComponent(lieu||'Paris')}`;
+
+function Lien({href,children,classe='btn'}){
+  return <a className={classe}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer">
+    {children} ↗
+  </a>;
+}
+
+function Titre({surtitre,titre,texte}){
+  return <>
+    <div className="eyebrow">{surtitre}</div>
+    <h1 className="title">{titre}</h1>
+    <p className="lead">{texte}</p>
+  </>;
+}
+
+function csvExport(lignes){
+  const noms=['Entreprise','Poste','Statut','Date','Notes','Lien'];
+  const data=[
+    noms,
+    ...lignes.map(a=>[
+      a.nom,a.poste,a.statut,a.date,a.notes,a.url
+    ])
+  ];
+  const csv='\uFEFF'+data.map(r=>
+    r.map(x=>'"'+String(x||'').replaceAll('"','""')+'"')
+      .join(';')
+  ).join('\r\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');
+  const u=URL.createObjectURL(blob);
+  a.href=u;
+  a.download='nour-candidatures.csv';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(u),1000);
+}
+
+// ============================================================
+// APPLICATION REACT
+// ============================================================
+
+function App(){
+ const [onglet,setOnglet]=useState('accueil');
+ const [profil,setProfil]=useStockage('profil',initialProfil);
+ const [favoris,setFavoris]=useStockage('favoris',[]);
+ const [suivi,setSuivi]=useStockage('suivi',[]);
+ const [texte,setTexte]=useState('');
+ const [secteur,setSecteur]=useState('Tous');
+ const [favorisSeuls,setFavorisSeuls]=useState(false);
+ const [quantite,setQuantite]=useState(30);
+ const [recherchePlateforme,setRecherchePlateforme]=useState('');
+ const [note,setNote]=useState('');
+ const [modele,setModele]=useState('candidature');
+ const [nomEntreprise,setNomEntreprise]=useState('');
+ const [posteMessage,setPosteMessage]=useState('Assistante administrative');
+ const [manuel,setManuel]=useState('');
+ const [manuelPoste,setManuelPoste]=useState('');
+
+ const selection=useMemo(()=>
+   ENTREPRISES.filter(e=>
+     (secteur==='Tous'||e.secteur===secteur)&&
+     (!favorisSeuls||favoris.includes(e.nom))&&
+     normaliser(e.nom+' '+e.secteur).includes(normaliser(texte))
+   ),[texte,secteur,favorisSeuls,favoris]);
+
+ const ouvrir=t=>{
+   setOnglet(t);
+   window.scrollTo({top:0,behavior:'smooth'});
+ };
+
+ const signaler=msg=>{
+   setNote(msg);
+   setTimeout(()=>setNote(''),3000);
+ };
+
+ const aimer=nom=>
+   setFavoris(f=>f.includes(nom)
+     ?f.filter(x=>x!==nom)
+     :[...f,nom]);
+
+ const ajouter=(nom,url='',poste='À définir')=>{
+   if(!nom.trim())return;
+   setSuivi(v=>v.some(x=>x.nom.toLowerCase()===nom.toLowerCase())
+     ?v
+     :[...v,{
+       id:Date.now()+'-'+Math.random(),
+       nom,poste,
+       statut:'À contacter',
+       date:new Date().toLocaleDateString('fr-FR'),
+       notes:'',
+       url
+     }]);
+   signaler('Ajouté au suivi des candidatures');
+ };
+
+ const modifier=(id,champ,val)=>
+   setSuivi(v=>v.map(x=>x.id===id
+     ?{...x,[champ]:val}
+     :x));
+
+ const envoyer=()=>{
+   if(!manuel.trim())return;
+   ajouter(manuel.trim(),'',manuelPoste||'À définir');
+   setManuel('');
+   setManuelPoste('');
+ };
+
+ // Génération du message aux recruteurs
+ const message=(()=>{
+   const cible=nomEntreprise
+     ?' au sein de '+nomEntreprise
+     :' dans votre entreprise';
+   const poste=posteMessage||profil.poste;
+
+   if(modele==='conditions')
+     return `Bonjour,
+
+Je souhaite me renseigner sur les opportunités de ${poste}${cible}. Pourriez-vous m'indiquer si un règlement vestimentaire s'applique au poste, notamment concernant le port d'un foulard, et comment sont organisées les pauses et les horaires ?
+
+Je vous remercie pour votre retour.
+
+Cordialement,
+${profil.prenom}`;
+
+   if(modele==='relance')
+     return `Bonjour,
+
+Je me permets de revenir vers vous concernant ma candidature pour un poste de ${poste}${cible}. Je reste très intéressée et disponible pour un échange.
+
+Je vous remercie pour votre attention.
+
+Cordialement,
+${profil.prenom}`;
+
+   return `Bonjour,
+
+Je souhaite vous proposer ma candidature pour un poste de ${poste}${cible}. Titulaire du baccalauréat et ayant une expérience en vente et en accueil, je suis organisée, sérieuse et à l'aise dans la relation client.
+
+Je recherche idéalement un contrat à temps partiel de ${profil.heures}, dans le secteur de ${profil.lieu}. Je serais ravie d'échanger avec vous sur les postes disponibles et les modalités de travail.
+
+Cordialement,
+${profil.prenom}`;
+ })();
+
+ const copier=async()=>{
+   try{
+     await navigator.clipboard.writeText(message);
+     signaler('Message copié');
+   }catch{
+     signaler('Sélectionne le message et copie-le');
+   }
+ };
+
+ const nav=<>
+   {ONGLETS.map(([id,libelle])=>
+     <button key={id}
+       className={onglet===id?'active':''}
+       onClick={()=>ouvrir(id)}>
+       {libelle}
+       {id==='candidatures'&&suivi.length>0
+         ?' ('+suivi.length+')'
+         :''}
+     </button>
+   )}
+ </>;
+
+ return <div className="shell">
+
+  {/* NAVIGATION ORDINATEUR */}
+  <aside className="sidebar">
+   <div className="brand">
+    <div className="mark">N</div>
+    <div>
+     <strong>Nour Carrière</strong>
+     <small>Ta carrière, tes choix.</small>
+    </div>
+   </div>
+   <nav className="menu">{nav}</nav>
+   <div className="sidebar-note">
+    Un annuaire d'exploration : l'apparition d'une entreprise
+    ne garantit pas qu'elle accepte le voile ou dispose de
+    postes ouverts.
+   </div>
+  </aside>
+
+  <div>
+   {/* NAVIGATION MOBILE */}
+   <div className="mobilebar">
+    <div className="mobilebrand">N · Nour Carrière</div>
+    <nav className="mobilemenu">{nav}</nav>
+   </div>
+
+   <main className="content">
+    <div className="top">
+     <span className="eyebrow">Espace carrière · Île-de-France</span>
+     <span className="hint">Données privées dans ton navigateur</span>
+    </div>
+
+    {/* =====================================================
+        ACCUEIL
+       ===================================================== */}
+    {onglet==='accueil'&&<>
+     <div className="hero">
+      <div style={{fontSize:12,fontWeight:800,letterSpacing:2}}>
+       BIENVENUE SUR NOUR CARRIÈRE
+      </div>
+      <h1>
+       Un emploi à la hauteur de tes compétences,
+       dans le respect de tes convictions.
+      </h1>
+      <p>
+       Découvre des entreprises, trouve leurs pages de recrutement,
+       prépare tes messages et organise tes candidatures
+       au même endroit.
+      </p>
+      <div className="row">
+       <button className="btn" onClick={()=>ouvrir('entreprises')}>
+        Explorer les entreprises →
+       </button>
+       <button className="btn" onClick={()=>ouvrir('plateformes')}>
+        Voir les plateformes →
+       </button>
+      </div>
+     </div>
+
+     <div className="grid intro-cards">
+      <div className="stat">
+       <b>{ENTREPRISES.length}</b>
+       <span>Entreprises référencées</span>
+      </div>
+      <div className="stat">
+       <b>{Object.keys(CARRIERES).length}</b>
+       <span>Liens de recrutement renseignés</span>
+      </div>
+      <div className="stat">
+       <b>{suivi.length}</b>
+       <span>Candidatures enregistrées</span>
+      </div>
+     </div>
+
+     <h2 className="section">Commencer ta recherche</h2>
+     <div className="grid">
+      <div className="card">
+       <span className="tag">01 · Découvrir</span>
+       <h3>Entreprises & recrutement</h3>
+       <p>
+        Recherche par nom, activité, favoris et accès direct
+        aux pages carrière disponibles.
+       </p>
+       <button className="btn primary actions"
+         onClick={()=>ouvrir('entreprises')}>
+        Voir l'annuaire →
+       </button>
+      </div>
+
+      <div className="card">
+       <span className="tag">02 · Postuler</span>
+       <h3>Sites spécialisés</h3>
+       <p>
+        EntreSœur, Super Sœur, Al-Wasil,
+        JobHijabFrance et moteurs d'offres.
+       </p>
+       <button className="btn primary actions"
+         onClick={()=>ouvrir('plateformes')}>
+        Ouvrir les plateformes →
+       </button>
+      </div>
+
+      <div className="card">
+       <span className="tag">03 · S'organiser</span>
+       <h3>Mes candidatures</h3>
+       <p>
+        Garde une trace des postes, des entretiens et des relances,
+        même sans compte.
+       </p>
+       <button className="btn primary actions"
+         onClick={()=>ouvrir('candidatures')}>
+        Suivre mes démarches →
+       </button>
+      </div>
+     </div>
+
+     <div className="notice warn">
+      <strong>Important :</strong> les noms d'entreprises proviennent
+      de listes communautaires. Leur présence ne prouve pas l'acceptation
+      du voile, la possibilité de prier pendant le travail ou
+      l'existence d'une offre. Vérifie ces points auprès
+      de chaque recruteur.
+     </div>
+    </>}
+
+    {/* =====================================================
+        ENTREPRISES
+       ===================================================== */}
+    {onglet==='entreprises'&&<>
+     <Titre
+      surtitre="Annuaire entreprises"
+      titre="Les entreprises à explorer"
+      texte="Un clic ouvre le site carrière lorsqu'un lien est renseigné. Sinon, une recherche ciblée te permet de retrouver le recrutement de l'entreprise."
+     />
+
+     <div className="filters">
+      <input
+       className="field search"
+       aria-label="Rechercher une entreprise"
+       placeholder="Rechercher une entreprise (ex. AXA, IKEA, Orange...)"
+       value={texte}
+       onChange={e=>{
+        setTexte(e.target.value);
+        setQuantite(30);
+       }}
+      />
+
+      <select
+       aria-label="Filtrer par secteur"
+       className="field"
+       value={secteur}
+       onChange={e=>{
+        setSecteur(e.target.value);
+        setQuantite(30);
+       }}>
+       <option>Tous</option>
+       {Object.keys(GROUPES).map(c=>
+        <option key={c}>{c}</option>
+       )}
+      </select>
+
+      <label className="toggle">
+       <input type="checkbox"
+        checked={favorisSeuls}
+        onChange={e=>setFavorisSeuls(e.target.checked)}/>
+       Favoris seulement
+      </label>
+     </div>
+
+     <div className="row between" style={{marginBottom:15}}>
+      <div className="count">
+       {selection.length} entreprise(s) trouvée(s)
+       {' · '}{favoris.length} favoris
+      </div>
+      <button className="btn small"
+       onClick={()=>{
+        setTexte('');
+        setSecteur('Tous');
+        setFavorisSeuls(false);
+       }}>
+       Réinitialiser
+      </button>
+     </div>
+
+     {selection.length===0
+      ?<div className="empty">
+        Aucune entreprise trouvée. Essaie d'autres mots.
+       </div>
+      :<div className="grid">
+        {selection.slice(0,quantite).map(e=>
+         <article className="card" key={e.nom}>
+          <div className="row between" style={{flexWrap:'nowrap'}}>
+           <div className="company-name">
+            <div className="initial">{e.nom[0]}</div>
+            <div>
+             <h3>{e.nom}</h3>
+             <span>{e.secteur}</span>
+            </div>
+           </div>
+           <button
+            className="btn small"
+            aria-label={'Favori '+e.nom}
+            onClick={()=>aimer(e.nom)}>
+            {favoris.includes(e.nom)?'★':'☆'}
+           </button>
+          </div>
+
+          <span className={'tag '+(e.url?'':'amber')}>
+           {e.url?'Lien carrière renseigné':'Recherche de carrière'}
+          </span>
+
+          <p>
+           Port du voile, horaires, contrat et possibilités de pauses :
+           à confirmer avec le recruteur.
+          </p>
+
+          <div className="row actions">
+           <Lien
+            href={e.url||rechercheEntreprise(e.nom)}
+            classe="btn primary small">
+            {e.url?'Site carrière':'Rechercher'}
+           </Lien>
+
+           <button className="btn small"
+            onClick={()=>ajouter(
+             e.nom,e.url||rechercheEntreprise(e.nom)
+            )}>
+            + Suivre
+           </button>
+          </div>
+         </article>
+        )}
+       </div>
+     }
+
+     {selection.length>quantite&&
+      <div className="row"
+       style={{justifyContent:'center',margin:25}}>
+       <button className="btn primary"
+        onClick={()=>setQuantite(v=>v+30)}>
+        Afficher 30 autres entreprises
+        ({selection.length-quantite} restantes)
+       </button>
+      </div>
+     }
+
+     <div className="notice">
+      Certaines sociétés ont changé de nom ou utilisent le portail
+      carrière de leur groupe. Les adresses sont fournies comme points
+      de départ, sans validation en temps réel de chaque page.
+     </div>
+    </>}
+
+    {/* =====================================================
+        PLATEFORMES
+       ===================================================== */}
+    {onglet==='plateformes'&&<>
+     <Titre
+      surtitre="Réseaux & jobboards"
+      titre="Les plateformes pour postuler"
+      texte="Accède aux ressources spécialisées et généralistes. Les pages impossibles à identifier de manière fiable renvoient vers une recherche, jamais vers un faux site."
+     />
+
+     <div className="filters">
+      <input className="field search"
+       placeholder="Rechercher une plateforme"
+       aria-label="Rechercher une plateforme"
+       value={recherchePlateforme}
+       onChange={e=>setRecherchePlateforme(e.target.value)}
+      />
+     </div>
+
+     <div className="grid">
+      {PLATEFORMES.filter(p=>
+       normaliser(p.join(' ')).includes(
+        normaliser(recherchePlateforme)
+       )
+      ).map(([nom,genre,url,etat])=>
+       <article className="card" key={nom}>
+        <div className="initial">{nom[0]}</div>
+        <h3>{nom}</h3>
+        <span className={'tag '+(url?'':'amber')}>
+         {etat}
+        </span>
+        <p>
+         {genre}. Vérifie que les offres sont toujours disponibles
+         et que le recruteur est identifiable.
+        </p>
+        <div className="actions">
+         <Lien
+          href={url||rechercheEntreprise(nom+' emploi')}
+          classe="btn primary">
+          {url?'Ouvrir la plateforme':'Rechercher la page'}
+         </Lien>
+        </div>
+       </article>
+      )}
+     </div>
+
+     <div className="notice warn">
+      Attention aux frais d'inscription, annonces non datées
+      et demandes de documents personnels : vérifie les conditions
+      et l'identité des interlocuteurs avant de t'engager.
+     </div>
+    </>}
+
+    {/* =====================================================
+        MÉTIERS ET OFFRES
+       ===================================================== */}
+    {onglet==='metiers'&&<>
+     <Titre
+      surtitre="Idées de postes"
+      titre="Des métiers à cibler"
+      texte="Des recherches d'annonces actualisées pour un profil bac avec expérience en vente et accueil, à temps partiel. Aucun résultat n'est présenté ici comme une offre confirmée."
+     />
+
+     <div className="grid">
+      {METIERS.map(([nom,description,priorite])=>
+       <article className="card" key={nom}>
+        <span className="tag">{priorite}</span>
+        <h3>{nom}</h3>
+        <p>{description}</p>
+        <div className="actions">
+         <Lien
+          href={rechercheOffre(nom,profil.lieu)}
+          classe="btn primary">
+          Voir les offres
+         </Lien>
+        </div>
+       </article>
+      )}
+     </div>
+
+     <h2 className="section">Autres moteurs de recherche</h2>
+     <div className="row">
+      <Lien href="https://candidat.francetravail.fr/offres/recherche">
+       France Travail
+      </Lien>
+      <Lien href="https://fr.linkedin.com/jobs/">
+       LinkedIn Emplois
+      </Lien>
+      <Lien href="https://www.hellowork.com/fr-fr/">
+       Hellowork
+      </Lien>
+     </div>
+    </>}
+
+    {/* =====================================================
+        SUIVI DES CANDIDATURES
+       ===================================================== */}
+    {onglet==='candidatures'&&<>
+     <Titre
+      surtitre="Organisation personnelle"
+      titre="Mon suivi de candidatures"
+      texte="Ajoute des entreprises, change le statut des dossiers et exporte le tableau en CSV. Les données sont conservées localement dans cet appareil."
+     />
+
+     <div className="panel">
+      <h2 style={{marginTop:0}}>Ajouter une candidature</h2>
+
+      <div className="formgrid">
+       <div className="formgroup">
+        <label>Entreprise</label>
+        <input className="field"
+         value={manuel}
+         onChange={e=>setManuel(e.target.value)}
+         placeholder="Nom de l'entreprise"/>
+       </div>
+       <div className="formgroup">
+        <label>Poste</label>
+        <input className="field"
+         value={manuelPoste}
+         onChange={e=>setManuelPoste(e.target.value)}
+         placeholder="Intitulé du poste"/>
+       </div>
+      </div>
+
+      <div className="row" style={{marginTop:12}}>
+       <button className="btn primary" onClick={envoyer}>
+        Ajouter au tableau
+       </button>
+       <button className="btn" onClick={()=>csvExport(suivi)}>
+        Exporter CSV ↓
+       </button>
+      </div>
+     </div>
+
+     {suivi.length===0
+      ?<div className="empty">
+        Aucune candidature enregistrée. Ajoute une entreprise
+        depuis l'annuaire ou ici.
+       </div>
+      :<div className="panel scroll">
+        <table>
+         <thead>
+          <tr>
+           <th>Entreprise</th>
+           <th>Poste</th>
+           <th>Statut</th>
+           <th>Date</th>
+           <th>Notes</th>
+           <th>Action</th>
+          </tr>
+         </thead>
+         <tbody>
+          {suivi.map(a=>
+           <tr key={a.id}>
+            <td>
+             <strong>{a.nom}</strong>
+             {a.url&&
+              <div>
+               <Lien href={a.url} classe="">Lien</Lien>
+              </div>
+             }
+            </td>
+            <td>
+             <input className="field"
+              aria-label={'Poste '+a.nom}
+              value={a.poste}
+              onChange={e=>modifier(
+               a.id,'poste',e.target.value
+              )}/>
+            </td>
+            <td>
+             <select className="field"
+              aria-label={'Statut '+a.nom}
+              value={a.statut}
+              onChange={e=>modifier(
+               a.id,'statut',e.target.value
+              )}>
+              {[
+               'À contacter','Envoyée','Relance',
+               'Entretien','Acceptée','Refusée'
+              ].map(v=><option key={v}>{v}</option>)}
+             </select>
+            </td>
+            <td>{a.date}</td>
+            <td>
+             <input className="field"
+              aria-label={'Notes '+a.nom}
+              value={a.notes}
+              placeholder="Retour RH…"
+              onChange={e=>modifier(
+               a.id,'notes',e.target.value
+              )}/>
+            </td>
+            <td>
+             <button className="btn small danger"
+              onClick={()=>setSuivi(v=>
+               v.filter(x=>x.id!==a.id)
+              )}>
+              Supprimer
+             </button>
+            </td>
+           </tr>
+          )}
+         </tbody>
+        </table>
+       </div>
+     }
+    </>}
+
+    {/* =====================================================
+        MESSAGES RH
+       ===================================================== */}
+    {onglet==='messages'&&<>
+     <Titre
+      surtitre="Contact direct"
+      titre="Rédige tes messages RH"
+      texte="Prépare un message personnalisé pour candidater, poser une question sur le règlement vestimentaire ou relancer une entreprise. Aucun envoi automatique."
+     />
+
+     <div className="panel">
+      <div className="formgrid">
+       <div className="formgroup">
+        <label>Type de message</label>
+        <select className="field"
+         value={modele}
+         onChange={e=>setModele(e.target.value)}>
+         <option value="candidature">Candidature spontanée</option>
+         <option value="conditions">Questions sur les conditions</option>
+         <option value="relance">Relance</option>
+        </select>
+       </div>
+
+       <div className="formgroup">
+        <label>Entreprise</label>
+        <input className="field"
+         value={nomEntreprise}
+         onChange={e=>setNomEntreprise(e.target.value)}
+         placeholder="Ex. AXA"/>
+       </div>
+
+       <div className="formgroup full">
+        <label>Poste visé</label>
+        <input className="field"
+         value={posteMessage}
+         onChange={e=>setPosteMessage(e.target.value)}
+         placeholder="Ex. Assistante administrative"/>
+       </div>
+      </div>
+
+      <h2 className="section">Aperçu</h2>
+      <div className="draft">{message}</div>
+
+      <div className="row" style={{marginTop:15}}>
+       <button className="btn primary" onClick={copier}>
+        Copier le message
+       </button>
+       <a className="btn"
+        href={
+         'mailto:?subject='+
+         encodeURIComponent('Candidature – '+posteMessage)+
+         '&body='+encodeURIComponent(message)
+        }>
+        Ouvrir mon e-mail ↗
+       </a>
+      </div>
+     </div>
+
+     <div className="notice">
+      Pour postuler réellement, ouvre le portail de recrutement,
+      cherche une annonce compatible puis utilise la candidature
+      du site. Un simple e-mail ne remplace pas toujours
+      le dépôt du CV.
+     </div>
+    </>}
+
+    {/* =====================================================
+        DROITS ET CONSEILS
+       ===================================================== */}
+    {onglet==='droits'&&<>
+     <Titre
+      surtitre="Ressources pratiques"
+      titre="Connaître ses droits"
+      texte="Quelques repères généraux en France, à distinguer des règles applicables à chaque poste et entreprise."
+     />
+
+     <div className="panel">
+      <h2>Port du voile et emploi</h2>
+      <p className="lead">
+       Dans le secteur privé, le port d'un signe religieux
+       n'est pas automatiquement interdit. Certaines restrictions
+       peuvent être légalement justifiées selon les fonctions,
+       la sécurité et des règles de neutralité applicables.
+       Les agents publics sont soumis à une obligation de neutralité
+       dans l'exercice de leurs fonctions.
+      </p>
+
+      <h2>Prières et horaires</h2>
+      <p className="lead">
+       Les pauses et les éventuels aménagements doivent être
+       discutés avec l'employeur dans le respect de l'organisation
+       et des règles applicables. Le télétravail ne garantit pas
+       automatiquement une liberté totale d'horaires.
+      </p>
+
+      <h2>Discrimination</h2>
+      <p className="lead">
+       Le recrutement ne doit pas reposer sur une discrimination
+       illicite fondée sur la religion. En cas de doute, tu peux
+       consulter le Défenseur des droits et des sources officielles.
+      </p>
+
+      <div className="row">
+       <Lien href="https://www.service-public.fr/">
+        Service Public
+       </Lien>
+       <Lien href="https://www.defenseurdesdroits.fr/">
+        Défenseur des droits
+       </Lien>
+       <Lien href="https://www.legifrance.gouv.fr/">
+        Légifrance
+       </Lien>
+      </div>
+     </div>
+
+     <div className="panel">
+      <h2>Points à vérifier avant de signer</h2>
+      {[
+       'Salaire brut, heures garanties et type de contrat',
+       'Temps de transport et lieu de travail exact',
+       'Règlement vestimentaire applicable au poste',
+       'Organisation des pauses et télétravail',
+       'Missions réelles et éventuels objectifs de rendement'
+      ].map(t=>
+       <div className="listline" key={t}>✓ {t}</div>
+      )}
+     </div>
+
+     <div className="panel">
+      <h2>Formations et accompagnement</h2>
+      <div className="row">
+       <Lien href="https://www.francetravail.fr/candidat/en-formation.html">
+        Formations France Travail
+       </Lien>
+       <Lien href="https://www.unml.info/">
+        Missions locales
+       </Lien>
+       <Lien href="https://www.moncompteformation.gouv.fr/">
+        Mon Compte Formation
+       </Lien>
+      </div>
+     </div>
+    </>}
+
+    {/* =====================================================
+        PROFIL
+       ===================================================== */}
+    {onglet==='profil'&&<>
+     <Titre
+      surtitre="Préférences"
+      titre="Ma recherche d'emploi"
+      texte="Personnalise ton objectif et conserve tes préférences dans le navigateur. Elles seront utilisées dans les recherches et messages."
+     />
+
+     <div className="panel">
+      <div className="formgrid">
+       {[
+        ['prenom','Prénom (facultatif)'],
+        ['lieu','Ville / département'],
+        ['heures','Heures par semaine'],
+        ['trajet','Temps de trajet maximum'],
+        ['poste','Poste souhaité'],
+        ['contrat','Type de contrat']
+       ].map(([k,l])=>
+        <div className="formgroup" key={k}>
+         <label>{l}</label>
+         <input className="field"
+          value={profil[k]}
+          onChange={e=>setProfil(p=>({
+           ...p,[k]:e.target.value
+          }))}/>
+        </div>
+       )}
+      </div>
+
+      <div className="notice">
+       Profil enregistré automatiquement dans cet appareil.
+       Attention : vider les données du navigateur peut effacer
+       ton suivi et tes favoris.
+      </div>
+     </div>
+    </>}
+
+    {/* PIED DE PAGE */}
+    <footer className="footer">
+     Nour Carrière · Annuaire indépendant d'orientation
+     professionnelle · Aucun partenariat ni politique
+     d'acceptation du voile n'est présumé pour les entreprises
+     citées. Les liens et offres peuvent évoluer.
+    </footer>
+
+   </main>
+  </div>
+
+  {note&&
+   <div className="toast" role="status">
+    {note}
+   </div>
+  }
+ </div>;
+}
+
+// LANCEMENT DE L'APPLICATION
+ReactDOM.createRoot(
+ document.getElementById('root')
+).render(<App/>);
+
+</script>
+</body>
+</html>
+
